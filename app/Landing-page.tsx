@@ -9,13 +9,11 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Share,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const { height } = Dimensions.get("window");
 
-// SONGS
 const songs = [
   require("@/assets/music/CHPTRS_-_Last_Chance_Alt_Version__CeeNaija.com_.mp3"),
   require("@/assets/music/BNXN-Ft-Soweto-Gospel-Choir-In-Jesus-Name-(TrendyBeatz.com).mp3"),
@@ -34,18 +32,6 @@ const Landingpage = () => {
   const [muted, setMuted] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
   const currentPageRef = useRef(0);
-
-  // 🔥 SHARE FUNCTION
-  const handleShare = async () => {
-    try {
-      await Share.share({
-        message:
-          "Check out my 2025 Wrapped story! 🎧🔥 I listened for 10,992 minutes! #MyMusicStory",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // 🔥 Play song when page changes
   const playSongForPage = async (pageIndex: number) => {
@@ -67,7 +53,7 @@ const Landingpage = () => {
     }
   };
 
-  // Play first song on mount
+  // 🔥 Play first song on mount
   useEffect(() => {
     playSongForPage(0);
 
@@ -76,24 +62,24 @@ const Landingpage = () => {
     };
   }, []);
 
-  // Mute/Unmute
+  // 🔥 Mute/Unmute
   useEffect(() => {
     if (soundRef.current) {
       soundRef.current.setIsMutedAsync(muted);
     }
   }, [muted]);
 
-  // Detect scroll page
+  // 🔥 Detect Scroll Page
   const handleScroll = (event: {
     nativeEvent: { contentOffset: { y: any } };
   }) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
-    // Change song only when scrolling to even pages (0, 2, 4…)
+    // Change song only on even-numbered pages (0, 2, 4…)
     if (index % 2 === 0 && index !== currentPageRef.current) {
       currentPageRef.current = index;
-      playSongForPage(index / 2);
+      playSongForPage(index / 2); // Every 2 pages = next song
     }
   };
 
@@ -145,9 +131,7 @@ const Landingpage = () => {
             />
             <TouchableOpacity onPress={() => setMuted((m) => !m)}>
               <Ionicons
-                name={
-                  muted ? "volume-mute-outline" : "volume-medium-outline"
-                }
+                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
                 size={24}
                 color="white"
               />
@@ -155,7 +139,7 @@ const Landingpage = () => {
           </View>
 
           <Text style={styles.pageTitle}>You listened.</Text>
-          <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
+          <Text style={{ color: "white", fontSize: 32, fontWeight: "bold", lineHeight: 20 }}>
             We counted.
           </Text>
         </View>
@@ -172,9 +156,7 @@ const Landingpage = () => {
             />
             <TouchableOpacity onPress={() => setMuted((m) => !m)}>
               <Ionicons
-                name={
-                  muted ? "volume-mute-outline" : "volume-medium-outline"
-                }
+                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
                 size={24}
                 color="white"
               />
@@ -206,21 +188,18 @@ const Landingpage = () => {
             You Listened for <Text style={{ fontWeight: "bold" }}>10,992</Text>{" "}
             minutes.
           </Text>
-
-          <TouchableOpacity onPress={handleShare}>
-            <Text
-              style={{
-                backgroundColor: "#fff",
-                marginTop: 20,
-                borderRadius: 50,
-                paddingHorizontal: 20,
-                paddingVertical: 14,
-                fontWeight: "bold",
-              }}
-            >
-              Share this story
-            </Text>
-          </TouchableOpacity>
+          <Text
+            style={{
+              backgroundColor: "#fff",
+              marginTop: 10,
+              borderRadius: 50,
+              paddingHorizontal: 20,
+              paddingVertical: 14,
+              fontWeight: "bold",
+            }}
+          >
+            Share this story
+          </Text>
         </View>
 
         {/* PAGE 4 */}
@@ -235,9 +214,7 @@ const Landingpage = () => {
             />
             <TouchableOpacity onPress={() => setMuted((m) => !m)}>
               <Ionicons
-                name={
-                  muted ? "volume-mute-outline" : "volume-medium-outline"
-                }
+                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
                 size={24}
                 color="black"
               />
@@ -251,6 +228,7 @@ const Landingpage = () => {
               color: "#222",
               textAlign: "center",
               maxWidth: 300,
+              lineHeight: 30,
             }}
           >
             Taste like yours can't be defined. But let's try anyway.
@@ -283,9 +261,7 @@ const Landingpage = () => {
             />
             <TouchableOpacity onPress={() => setMuted((m) => !m)}>
               <Ionicons
-                name={
-                  muted ? "volume-mute-outline" : "volume-medium-outline"
-                }
+                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
                 size={24}
                 color="black"
               />
@@ -297,12 +273,12 @@ const Landingpage = () => {
               style={{
                 fontSize: 24,
                 fontWeight: "bold",
+
                 textAlign: "center",
               }}
             >
               Your top genres
             </Text>
-
             {topGenres.map((genre) => (
               <View
                 key={genre.rank}
@@ -322,7 +298,6 @@ const Landingpage = () => {
                 >
                   {genre.rank}
                 </Text>
-
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -330,6 +305,8 @@ const Landingpage = () => {
                     backgroundColor: "black",
                     letterSpacing: -6,
                     color: "white",
+                    paddingHorizontal: 0,
+                    marginLeft: 0,
                     flex: 1,
                     paddingVertical: 1,
                   }}
@@ -340,21 +317,19 @@ const Landingpage = () => {
             ))}
 
             <View style={{ alignItems: "center", marginTop: 20 }}>
-              <TouchableOpacity onPress={handleShare}>
-                <Text
-                  style={{
-                    backgroundColor: "#000",
-                    marginTop: 10,
-                    borderRadius: 50,
-                    paddingHorizontal: 20,
-                    paddingVertical: 14,
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                >
-                  Share this story
-                </Text>
-              </TouchableOpacity>
+              <Text
+                style={{
+                  backgroundColor: "#000",
+                  marginTop: 10,
+                  borderRadius: 50,
+                  paddingHorizontal: 20,
+                  paddingVertical: 14,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                Share this story
+              </Text>
             </View>
           </View>
         </View>
