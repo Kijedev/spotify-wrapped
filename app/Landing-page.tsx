@@ -1,5 +1,7 @@
 import TopHeader from "@/components/TopHeader";
 import { Audio } from "expo-av";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
@@ -26,19 +28,40 @@ const topGenres = [
   { rank: 5, name: "Gospel" },
 ];
 
+// Reusable Text component with Lexend-Bold
+const AppText = ({ style, children, ...props }: any) => (
+  <Text style={[{ fontFamily: "Lexend-Bold" }, style]} {...props}>
+    {children}
+  </Text>
+);
+
 const Landingpage = () => {
   const [muted, setMuted] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
   const currentPageRef = useRef(0);
   const scrollViewRef = useRef<ScrollView>(null);
-  const [statusBarStyle, setStatusBarStyle] = useState<
-    "light-content" | "dark-content"
-  >("dark-content");
-  const [isDarkHeader, setIsDarkHeader] = useState(true); // default for page 1?
+  const [statusBarStyle, setStatusBarStyle] = useState<"light-content" | "dark-content">("dark-content");
+  const [isDarkHeader, setIsDarkHeader] = useState(true);
 
-  // 🔥 Go to previous page
+  // Load fonts
+  const [loaded] = useFonts({
+    "Lexend-Bold": require("@/assets/fonts/Lexend-Bold.ttf"),
+  });
+
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+  }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) return null;
+
+  // Go to previous page
   const goBack = () => {
-    // make sure the page index never goes below 0
     const newPage = Math.max(0, currentPageRef.current - 1);
     currentPageRef.current = newPage;
 
@@ -48,19 +71,17 @@ const Landingpage = () => {
     });
   };
 
-  // 🔥 Play song when page changes
+  // Play song
   const playSongForPage = async (pageIndex: number) => {
     try {
       if (soundRef.current) {
         await soundRef.current.stopAsync();
         await soundRef.current.unloadAsync();
       }
-
       const { sound } = await Audio.Sound.createAsync(songs[pageIndex], {
         shouldPlay: true,
         isLooping: true,
       });
-
       soundRef.current = sound;
       if (muted) sound.setIsMutedAsync(true);
     } catch (error) {
@@ -68,46 +89,32 @@ const Landingpage = () => {
     }
   };
 
-  // 🔥 Play first song on mount
+  // Play first song on mount
   useEffect(() => {
     playSongForPage(0);
-
     return () => {
       if (soundRef.current) soundRef.current.unloadAsync();
     };
   }, []);
 
-  // 🔥 Mute/Unmute
+  // Mute/unmute
   useEffect(() => {
-    if (soundRef.current) {
-      soundRef.current.setIsMutedAsync(muted);
-    }
+    if (soundRef.current) soundRef.current.setIsMutedAsync(muted);
   }, [muted]);
 
-  // 🔥 Detect Scroll Page
-  const handleScroll = (event: {
-    nativeEvent: { contentOffset: { y: any } };
-  }) => {
+  // Detect scroll
+  const handleScroll = (event: { nativeEvent: { contentOffset: { y: any } } }) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
     const whitePages = [0, 3, 4];
-
-    if (whitePages.includes(index)) {
-      setIsDarkHeader(false); // icons = black
-    } else {
-      setIsDarkHeader(true); // icons = white
-    }
+    setIsDarkHeader(!whitePages.includes(index));
 
     if (index !== currentPageRef.current) {
       currentPageRef.current = index;
 
-      // Change status bar based on page background
-      if (index === 0 || index === 3 || index === 4) {
-        setStatusBarStyle("dark-content");
-      } else {
-        setStatusBarStyle("light-content");
-      }
+      // Change status bar
+      setStatusBarStyle(whitePages.includes(index) ? "dark-content" : "light-content");
 
       // Change song on even pages
       if (index % 2 === 0) {
@@ -123,6 +130,7 @@ const Landingpage = () => {
         backgroundColor="transparent"
         translucent
       />
+
       <TopHeader
         isDarkBackground={isDarkHeader}
         muted={muted}
@@ -141,165 +149,53 @@ const Landingpage = () => {
       >
         {/* PAGE 1 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <Text style={styles.title}>We're ready for you, Kije.</Text>
-          <Text style={{ marginTop: 10 }}>Come on Down.</Text>
+          <AppText style={styles.title}>We're ready for you, Kije.</AppText>
+          <AppText style={{ marginTop: 10 }}>Come on Down.</AppText>
 
           <View style={styles.bigNumberContainer}>
-            <Text style={styles.bigNumber}>2025</Text>
+            <AppText style={styles.bigNumber}>2025</AppText>
           </View>
         </View>
 
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
-          <Text style={styles.pageTitle}>You listened.</Text>
-          <Text
-            style={{
-              color: "white",
-              fontSize: 32,
-              fontWeight: "bold",
-              lineHeight: 20,
-            }}
-          >
+          <AppText style={styles.pageTitle}>You listened.</AppText>
+          <AppText style={{ color: "white", fontSize: 32, lineHeight: 28 }}>
             We counted.
-          </Text>
+          </AppText>
         </View>
 
         {/* PAGE 3 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
-          <Text
-            style={{
-              fontSize: 120,
-              fontWeight: "bold",
-              color: "#DDA0FF",
-              textShadowColor: "white",
-              textShadowOffset: { width: 6, height: 3 },
-              textShadowRadius: 6,
-            }}
-          >
-            10,992
-          </Text>
-
-          <Text
-            style={{
-              color: "white",
-              fontSize: 16,
-              marginTop: 10,
-              maxWidth: 300,
-              textAlign: "center",
-            }}
-          >
-            You Listened for <Text style={{ fontWeight: "bold" }}>10,992</Text>{" "}
-            minutes.
-          </Text>
-          <Text
-            style={{
-              backgroundColor: "#fff",
-              marginTop: 10,
-              borderRadius: 50,
-              paddingHorizontal: 20,
-              paddingVertical: 14,
-              fontWeight: "bold",
-            }}
-          >
-            Share this story
-          </Text>
+          <AppText style={styles.bigNumberPage3}>10,992</AppText>
+          <AppText style={styles.pageText}>
+            You Listened for <AppText>10,992</AppText> minutes.
+          </AppText>
+          <AppText style={styles.shareButton}>Share this story</AppText>
         </View>
 
         {/* PAGE 4 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: "bold",
-              color: "#222",
-              textAlign: "center",
-              maxWidth: 300,
-              lineHeight: 30,
-            }}
-          >
+          <AppText style={styles.page4Title}>
             Taste like yours can't be defined. But let's try anyway.
-          </Text>
-
-          <Text
-            style={{
-              color: "#222",
-              fontSize: 16,
-              marginTop: 10,
-              maxWidth: 300,
-              textAlign: "center",
-            }}
-          >
-            You Listened to{" "}
-            <Text style={{ fontWeight: "bold", marginTop: 20 }}>156</Text>{" "}
-            genres.
-          </Text>
+          </AppText>
+          <AppText style={styles.pageText}>
+            You Listened to <AppText>156</AppText> genres.
+          </AppText>
         </View>
 
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <View>
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: "bold",
-
-                textAlign: "center",
-              }}
-            >
-              Your top genres
-            </Text>
-            {topGenres.map((genre) => (
-              <View
-                key={genre.rank}
-                style={{
-                  marginTop: 10,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  width: 350,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 22,
-                    fontWeight: "bold",
-                    width: 40,
-                  }}
-                >
-                  {genre.rank}
-                </Text>
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 60,
-                    backgroundColor: "black",
-                    letterSpacing: -6,
-                    color: "white",
-                    paddingHorizontal: 0,
-                    marginLeft: 0,
-                    flex: 1,
-                    paddingVertical: 1,
-                  }}
-                >
-                  {genre.name}
-                </Text>
-              </View>
-            ))}
-
-            <View style={{ alignItems: "center", marginTop: 20 }}>
-              <Text
-                style={{
-                  backgroundColor: "#000",
-                  marginTop: 10,
-                  borderRadius: 50,
-                  paddingHorizontal: 20,
-                  paddingVertical: 14,
-                  fontWeight: "bold",
-                  color: "white",
-                }}
-              >
-                Share this story
-              </Text>
+          <AppText style={{ fontSize: 24, textAlign: "center" }}>Your top genres</AppText>
+          {topGenres.map((genre) => (
+            <View key={genre.rank} style={styles.genreRow}>
+              <AppText style={styles.genreRank}>{genre.rank}</AppText>
+              <AppText style={styles.genreName}>{genre.name}</AppText>
             </View>
+          ))}
+
+          <View style={{ alignItems: "center", marginTop: 20 }}>
+            <AppText style={styles.shareButtonBlack}>Share this story</AppText>
           </View>
         </View>
       </ScrollView>
@@ -317,22 +213,68 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    position: "absolute",
-    top: 70,
+  title: {
+    fontSize: 40,
+    textAlign: "center",
+    lineHeight: 46,
   },
-  logo: { width: 100, height: 30, resizeMode: "contain" },
-  title: { fontWeight: "bold", fontSize: 30, textAlign: "center" },
   bigNumberContainer: { position: "absolute", bottom: 40 },
   bigNumber: {
     fontSize: 210,
-    fontWeight: "bold",
     color: "orangered",
     letterSpacing: -30,
   },
-  pageTitle: { fontSize: 32, fontWeight: "bold", color: "white" },
+  pageTitle: { fontSize: 32, color: "white" },
+  bigNumberPage3: {
+    fontSize: 110,
+    color: "#DDA0FF",
+    textShadowColor: "white",
+    textShadowOffset: { width: 6, height: 3 },
+    textShadowRadius: 6,
+  },
+  pageText: {
+    color: "white",
+    fontSize: 16,
+    marginTop: 10,
+    maxWidth: 300,
+    textAlign: "center",
+  },
+  shareButton: {
+    backgroundColor: "#fff",
+    marginTop: 10,
+    borderRadius: 50,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    textAlign: "center",
+  },
+  page4Title: {
+    fontSize: 28,
+    color: "#222",
+    textAlign: "center",
+    lineHeight: 30,
+  },
+  genreRow: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    width: 350,
+  },
+  genreRank: { fontSize: 22, width: 40 },
+  genreName: {
+    fontSize: 50,
+    backgroundColor: "black",
+    letterSpacing: -4,
+    color: "white",
+    flex: 1,
+    paddingVertical: 1,
+  },
+  shareButtonBlack: {
+    backgroundColor: "#000",
+    marginTop: 10,
+    borderRadius: 50,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    textAlign: "center",
+    color: "white",
+  },
 });

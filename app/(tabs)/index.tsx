@@ -97,26 +97,51 @@
 //   },
 // });
 
-import React from "react";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useEffect } from "react";
 import { StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
+
+SplashScreen.preventAutoHideAsync(); // IMPORTANT
 
 const Home = () => {
   const router = useRouter();
 
+  const [loaded] = useFonts({
+    "Lexend-Bold": require("@/assets/fonts/Lexend-Bold.ttf")
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) return null;
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Text style={{ fontSize: 24, marginBottom: 20, fontWeight: "bold" }}>
+
+      <Text
+        style={{
+          fontSize: 24,
+          fontFamily: "Lexend-Bold",
+          marginBottom: 20,
+        }}
+      >
         Your Spotify Wrapped is here!
       </Text>
+
       <TouchableOpacity
         style={styles.spotifyWrappedButton}
         onPress={() => router.push("/Landing-page")}
       >
-        <Text style={{ color: "white" }}>Spotify Wrapped</Text>
+        <Text style={{ color: "white", fontFamily: "Lexend-Bold" }}>
+          Spotify Wrapped
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
