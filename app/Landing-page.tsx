@@ -5,12 +5,12 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const { height } = Dimensions.get("window");
 
@@ -32,6 +32,22 @@ const Landingpage = () => {
   const [muted, setMuted] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
   const currentPageRef = useRef(0);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [statusBarStyle, setStatusBarStyle] = useState<
+    "light-content" | "dark-content"
+  >("dark-content");
+
+  // 🔥 Go to previous page
+  const goBack = () => {
+    // make sure the page index never goes below 0
+    const newPage = Math.max(0, currentPageRef.current - 1);
+    currentPageRef.current = newPage;
+
+    scrollViewRef.current?.scrollTo({
+      y: newPage * height,
+      animated: true,
+    });
+  };
 
   // 🔥 Play song when page changes
   const playSongForPage = async (pageIndex: number) => {
@@ -76,16 +92,33 @@ const Landingpage = () => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
-    // Change song only on even-numbered pages (0, 2, 4…)
-    if (index % 2 === 0 && index !== currentPageRef.current) {
+    if (index !== currentPageRef.current) {
       currentPageRef.current = index;
-      playSongForPage(index / 2); // Every 2 pages = next song
+
+      // Change status bar based on page background
+      if (index === 0 || index === 3 || index === 4) {
+        setStatusBarStyle("dark-content");
+      } else {
+        setStatusBarStyle("light-content");
+      }
+
+      // Change song on even pages
+      if (index % 2 === 0) {
+        playSongForPage(index / 2);
+      }
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StatusBar
+        barStyle={statusBarStyle}
+        backgroundColor="transparent"
+        translucent
+      />
+
       <ScrollView
+        ref={scrollViewRef}
         pagingEnabled
         showsVerticalScrollIndicator={false}
         snapToInterval={height}
@@ -96,7 +129,7 @@ const Landingpage = () => {
         {/* PAGE 1 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
           <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goBack}>
               <Ionicons name="chevron-back-outline" size={24} />
             </TouchableOpacity>
             <Image
@@ -122,7 +155,7 @@ const Landingpage = () => {
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
           <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goBack}>
               <Ionicons name="chevron-back-outline" size={24} color="white" />
             </TouchableOpacity>
             <Image
@@ -139,7 +172,14 @@ const Landingpage = () => {
           </View>
 
           <Text style={styles.pageTitle}>You listened.</Text>
-          <Text style={{ color: "white", fontSize: 32, fontWeight: "bold", lineHeight: 20 }}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 32,
+              fontWeight: "bold",
+              lineHeight: 20,
+            }}
+          >
             We counted.
           </Text>
         </View>
@@ -147,7 +187,7 @@ const Landingpage = () => {
         {/* PAGE 3 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
           <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goBack}>
               <Ionicons name="chevron-back-outline" size={24} color="white" />
             </TouchableOpacity>
             <Image
@@ -205,7 +245,7 @@ const Landingpage = () => {
         {/* PAGE 4 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
           <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goBack}>
               <Ionicons name="chevron-back-outline" size={24} color="black" />
             </TouchableOpacity>
             <Image
@@ -252,7 +292,7 @@ const Landingpage = () => {
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
           <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goBack}>
               <Ionicons name="chevron-back-outline" size={24} color="black" />
             </TouchableOpacity>
             <Image
@@ -334,7 +374,7 @@ const Landingpage = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -354,7 +394,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     position: "absolute",
-    top: 20,
+    top: 70,
   },
   logo: { width: 100, height: 30, resizeMode: "contain" },
   title: { fontWeight: "bold", fontSize: 30, textAlign: "center" },

@@ -98,7 +98,7 @@
 // });
 
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
@@ -108,7 +108,11 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity 
+      <StatusBar barStyle="dark-content" />
+      <Text style={{ fontSize: 24, marginBottom: 20, fontWeight: "bold" }}>
+        Your Spotify Wrapped is here!
+      </Text>
+      <TouchableOpacity
         style={styles.spotifyWrappedButton}
         onPress={() => router.push("/Landing-page")}
       >
@@ -134,4 +138,3 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
 });
-
