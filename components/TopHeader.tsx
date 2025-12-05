@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
-  isDarkBackground: boolean; // true = black page → white icons
+  isDarkBackground: boolean;
   muted: boolean;
   onBack: () => void;
   onToggleMute: () => void;
@@ -44,7 +44,7 @@ export default TopHeader;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 0,
+    top: 20,
     width: "100%",
     paddingHorizontal: 20,
     paddingTop: 50,

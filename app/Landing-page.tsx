@@ -1,14 +1,12 @@
-import { Ionicons } from "@expo/vector-icons";
+import TopHeader from "@/components/TopHeader";
 import { Audio } from "expo-av";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
-  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -36,6 +34,7 @@ const Landingpage = () => {
   const [statusBarStyle, setStatusBarStyle] = useState<
     "light-content" | "dark-content"
   >("dark-content");
+  const [isDarkHeader, setIsDarkHeader] = useState(true); // default for page 1?
 
   // 🔥 Go to previous page
   const goBack = () => {
@@ -92,6 +91,14 @@ const Landingpage = () => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
+    const whitePages = [0, 3, 4];
+
+    if (whitePages.includes(index)) {
+      setIsDarkHeader(false); // icons = black
+    } else {
+      setIsDarkHeader(true); // icons = white
+    }
+
     if (index !== currentPageRef.current) {
       currentPageRef.current = index;
 
@@ -116,6 +123,12 @@ const Landingpage = () => {
         backgroundColor="transparent"
         translucent
       />
+      <TopHeader
+        isDarkBackground={isDarkHeader}
+        muted={muted}
+        onBack={goBack}
+        onToggleMute={() => setMuted(!muted)}
+      />
 
       <ScrollView
         ref={scrollViewRef}
@@ -128,22 +141,6 @@ const Landingpage = () => {
       >
         {/* PAGE 1 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <Ionicons name="chevron-back-outline" size={24} />
-            </TouchableOpacity>
-            <Image
-              source={require("@/assets/images/logo.png")}
-              style={styles.logo}
-            />
-            <TouchableOpacity onPress={() => setMuted((m) => !m)}>
-              <Ionicons
-                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
-                size={24}
-              />
-            </TouchableOpacity>
-          </View>
-
           <Text style={styles.title}>We're ready for you, Kije.</Text>
           <Text style={{ marginTop: 10 }}>Come on Down.</Text>
 
@@ -154,23 +151,6 @@ const Landingpage = () => {
 
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <Ionicons name="chevron-back-outline" size={24} color="white" />
-            </TouchableOpacity>
-            <Image
-              source={require("@/assets/images/logo-white.png")}
-              style={styles.logo}
-            />
-            <TouchableOpacity onPress={() => setMuted((m) => !m)}>
-              <Ionicons
-                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
-
           <Text style={styles.pageTitle}>You listened.</Text>
           <Text
             style={{
@@ -186,23 +166,6 @@ const Landingpage = () => {
 
         {/* PAGE 3 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <Ionicons name="chevron-back-outline" size={24} color="white" />
-            </TouchableOpacity>
-            <Image
-              source={require("@/assets/images/logo-white.png")}
-              style={styles.logo}
-            />
-            <TouchableOpacity onPress={() => setMuted((m) => !m)}>
-              <Ionicons
-                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
-
           <Text
             style={{
               fontSize: 120,
@@ -244,23 +207,6 @@ const Landingpage = () => {
 
         {/* PAGE 4 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <Ionicons name="chevron-back-outline" size={24} color="black" />
-            </TouchableOpacity>
-            <Image
-              source={require("@/assets/images/logo.png")}
-              style={styles.logo}
-            />
-            <TouchableOpacity onPress={() => setMuted((m) => !m)}>
-              <Ionicons
-                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-
           <Text
             style={{
               fontSize: 30,
@@ -291,23 +237,6 @@ const Landingpage = () => {
 
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={goBack}>
-              <Ionicons name="chevron-back-outline" size={24} color="black" />
-            </TouchableOpacity>
-            <Image
-              source={require("@/assets/images/logo.png")}
-              style={styles.logo}
-            />
-            <TouchableOpacity onPress={() => setMuted((m) => !m)}>
-              <Ionicons
-                name={muted ? "volume-mute-outline" : "volume-medium-outline"}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-
           <View>
             <Text
               style={{
