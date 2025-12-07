@@ -1,10 +1,12 @@
 import TopHeader from "@/components/TopHeader";
-import { Audio } from "expo-av";
+import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useRef, useState } from "react";
+// import RemaVideo from "@/assets/videos/rema.mp4";
 import {
   Dimensions,
+  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -28,7 +30,44 @@ const topGenres = [
   { rank: 5, name: "Gospel" },
 ];
 
-// Reusable Text component with Lexend-Bold
+const artists = [
+  {
+    id: 1,
+    songName: "Secrets",
+    artistName: "The Weekend",
+    image: "https://i.scdn.co/image/ab67616d00001e028ad8f5243d6534e03b656c8b",
+  },
+  {
+    id: 2,
+    songName: "FUN",
+    artistName: "Rema",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
+  },
+  {
+    id: 3,
+    songName: "Chandelier",
+    artistName: "Monaky",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIpEcks3y4pIxQLseOGDL7YglIDflHZu5sYg&s",
+  },
+  {
+    id: 4,
+    songName: "Fi Kan We Kan",
+    artistName: "BNXN, Rema",
+    image:
+      "https://www.xclusiveland.com/wp-content/uploads/2025/05/BNXN-Buju-Fi-kan-We-kan-Ft-Rema.webp",
+  },
+  {
+    id: 5,
+    songName: "Stronger",
+    artistName: "Young Jonn",
+    image:
+      "https://images.genius.com/b96b6aa534e0bdc94ce127689377aecf.1000x1000x1.png",
+  },
+];
+
+// Reusable Text component
 const AppText = ({ style, children, ...props }: any) => (
   <Text style={[{ fontFamily: "Lexend-Bold" }, style]} {...props}>
     {children}
@@ -36,11 +75,14 @@ const AppText = ({ style, children, ...props }: any) => (
 );
 
 const Landingpage = () => {
+  const videoRef = useRef(null);
   const [muted, setMuted] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
   const currentPageRef = useRef(0);
   const scrollViewRef = useRef<ScrollView>(null);
-  const [statusBarStyle, setStatusBarStyle] = useState<"light-content" | "dark-content">("dark-content");
+  const [statusBarStyle, setStatusBarStyle] = useState<
+    "light-content" | "dark-content"
+  >("dark-content");
   const [isDarkHeader, setIsDarkHeader] = useState(true);
 
   // Load fonts
@@ -103,18 +145,22 @@ const Landingpage = () => {
   }, [muted]);
 
   // Detect scroll
-  const handleScroll = (event: { nativeEvent: { contentOffset: { y: any } } }) => {
+  const handleScroll = (event: {
+    nativeEvent: { contentOffset: { y: any } };
+  }) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
-    const whitePages = [0, 3, 4];
+    const whitePages = [0, 3, 4, 5, 6];
     setIsDarkHeader(!whitePages.includes(index));
 
     if (index !== currentPageRef.current) {
       currentPageRef.current = index;
 
       // Change status bar
-      setStatusBarStyle(whitePages.includes(index) ? "dark-content" : "light-content");
+      setStatusBarStyle(
+        whitePages.includes(index) ? "dark-content" : "light-content"
+      );
 
       // Change song on even pages
       if (index % 2 === 0) {
@@ -179,6 +225,10 @@ const Landingpage = () => {
           <AppText style={styles.page4Title}>
             Taste like yours can't be defined. But let's try anyway.
           </AppText>
+          <Text style={{ marginTop: 10, fontSize: 16, textAlign: "center" }}>
+            You listened to <Text style={{ fontWeight: "bold" }}>156</Text>{" "}
+            genres.
+          </Text>
           <AppText style={styles.pageText}>
             You Listened to <AppText>156</AppText> genres.
           </AppText>
@@ -186,9 +236,11 @@ const Landingpage = () => {
 
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <AppText style={{ fontSize: 24, textAlign: "center" }}>Your top genres</AppText>
+          <AppText style={{ fontSize: 24, textAlign: "center" }}>
+            Your top genres
+          </AppText>
           {topGenres.map((genre) => (
-            <View key={genre.rank} style={styles.genreRow}>
+            <View key={genre.rank} style={styles.genreRow1}>
               <AppText style={styles.genreRank}>{genre.rank}</AppText>
               <AppText style={styles.genreName}>{genre.name}</AppText>
             </View>
@@ -197,6 +249,221 @@ const Landingpage = () => {
           <View style={{ alignItems: "center", marginTop: 20 }}>
             <AppText style={styles.shareButtonBlack}>Share this story</AppText>
           </View>
+        </View>
+
+        {/* PAGE 6 */}
+        <View style={[styles.page]}>
+          <Text
+            style={{
+              width: 400,
+              fontSize: 48,
+              textAlign: "center",
+              fontFamily: "Lexend-Bold",
+            }}
+          >
+            Age is just
+          </Text>
+          <Text
+            style={{
+              fontSize: 48,
+              textAlign: "center",
+              fontFamily: "Lexend-Bold",
+              marginTop: -20,
+            }}
+          >
+            a number.
+          </Text>
+          <Text
+            style={{
+              marginTop: 10,
+              fontSize: 16,
+              textAlign: "center",
+              fontWeight: "light",
+            }}
+          >
+            So don't take this personally.
+          </Text>
+        </View>
+
+        {/* PAGE 7 */}
+        <View style={[styles.page]}>
+          <Text
+            style={{
+              width: 400,
+              fontSize: 30,
+              textAlign: "center",
+              fontFamily: "Lexend-Bold",
+            }}
+          >
+            Your listening age
+          </Text>
+          <AppText style={styles.listeningAge}>19</AppText>
+          <Text
+            style={{
+              marginTop: -30,
+              fontSize: 16,
+              textAlign: "center",
+              fontWeight: "light",
+              maxWidth: 320,
+              lineHeight: 26,
+            }}
+          >
+            Since you listen to mostly new music. Your taste is trending.
+          </Text>
+          <View style={{ alignItems: "center", marginTop: 20 }}>
+            <AppText style={styles.shareButtonBlack}>Share this story</AppText>
+          </View>
+        </View>
+
+        {/* PAGE 8 */}
+        <View style={[styles.page, { backgroundColor: "#222" }]}>
+          <Text style={{ fontSize: 32, color: "white", textAlign: "center" }}>
+            You listened to <Text style={{ fontWeight: "bold" }}>1,261</Text>{" "}
+            songs this year.
+          </Text>
+          <Text style={{ color: "white", marginTop: 20 }}>
+            But can you guess your #1?
+          </Text>
+        </View>
+
+        {/* PAGE 9 */}
+        <View style={[styles.page, { backgroundColor: "#222" }]}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: "Lexend-Bold",
+              color: "white",
+              textAlign: "center",
+            }}
+          >
+            Take your pick.
+          </Text>
+          {artists.map((artist) => (
+            <View key={artist.artistName} style={styles.genreRow}>
+              <View>
+                <Image
+                  source={{ uri: artist.image }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 10,
+                    marginRight: 10,
+                  }}
+                />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontFamily: "Lexend-Bold",
+                    marginBottom: 10,
+                    color: "#fff",
+                    fontSize: 16,
+                  }}
+                >
+                  {artist.songName}
+                </Text>
+                <Text
+                  style={{
+                    marginBottom: 10,
+                    color: "#fff",
+                  }}
+                >
+                  {artist.artistName}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        {/* PAGE 10 */}
+        <View style={[styles.page, { backgroundColor: "#222" }]}>
+          <View style={styles.videoCard}>
+            {/* Video */}
+            <Video
+              ref={videoRef}
+              style={styles.video}
+              source={require("@/assets/video/rema.mp4")}
+              // resizeMode="cover"
+              shouldPlay
+              isLooping
+              isMuted
+            />
+          </View>
+
+          <Image
+              source={{
+                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
+              }}
+              style={styles.albumCover}
+            />
+
+          {/* Text Section */}
+          <View style={{ marginTop: 40, alignItems: "center" }}>
+            <Text style={styles.videoHeading}>Your top song</Text>
+            <Text style={styles.videoSubtitle}>FUN by Rema</Text>
+            <Text style={styles.videoCount}>You listened 46 times.</Text>
+          </View>
+
+          {/* Share Button */}
+          <View style={{ marginTop: 30 }}>
+            <Text style={styles.videoShareBtn}>Share this story</Text>
+          </View>
+        </View>
+
+        {/* PAGE 11 */}
+        <View style={[styles.page, { backgroundColor: "#222" }]}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: "Lexend-Bold",
+              color: "#222",
+              backgroundColor: "white",
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              textAlign: "center",
+              marginBottom: 20,
+            }}
+          >
+            Your top songs
+          </Text>
+
+          {artists.map((artist) => (
+            <View key={artist.artistName} style={styles.songRow}>
+              <View>
+                <Image
+                  source={{ uri: artist.image }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    // borderRadius: 10,
+                    borderWidth: 3,
+                    borderColor: "#fff",
+                    marginRight: 10,
+                  }}
+                />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontFamily: "Lexend-Bold",
+                    marginBottom: 10,
+                    color: "#fff",
+                    fontSize: 16,
+                  }}
+                >
+                  {artist.songName}
+                </Text>
+                <Text
+                  style={{
+                    marginBottom: 10,
+                    color: "#fff",
+                  }}
+                >
+                  {artist.artistName}
+                </Text>
+              </View>
+            </View>
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -239,6 +506,14 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     textAlign: "center",
   },
+  listeningAge: {
+    marginTop: -70,
+    fontSize: 250,
+    color: "#1ED760",
+    textShadowColor: "black",
+    textShadowOffset: { width: 5, height: 1 },
+    textShadowRadius: 6,
+  },
   shareButton: {
     backgroundColor: "#fff",
     marginTop: 10,
@@ -253,8 +528,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 30,
   },
-  genreRow: {
+  genreRow1: {
     marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    width: 350,
+  },
+  genreRow: {
+    borderWidth: 2,
+    borderColor: "#fff",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    backgroundColor: "#222",
+    marginTop: 30,
     flexDirection: "row",
     alignItems: "center",
     width: 350,
@@ -262,7 +548,7 @@ const styles = StyleSheet.create({
   genreRank: { fontSize: 22, width: 40 },
   genreName: {
     fontSize: 50,
-    backgroundColor: "black",
+    backgroundColor: "#111",
     letterSpacing: -4,
     color: "white",
     flex: 1,
@@ -276,5 +562,64 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     textAlign: "center",
     color: "white",
+  },
+  videoCard: {
+    width: "43%",
+    height: 170,
+    borderWidth: 2,
+    borderColor: "white",
+    borderRadius: 14,
+    overflow: "hidden",
+    flexDirection: "row",
+    position: "relative",
+  },
+
+  video: {
+    width: "100%",
+  },
+
+  albumCover: {
+    width: 100,
+    height: 100,
+    position: "relative",
+    bottom: 70,
+    left: 70,
+    borderWidth: 3,
+    borderColor: "#fff",
+  },
+
+  videoHeading: {
+    fontSize: 30,
+    fontFamily: "Lexend-Bold",
+    color: "white",
+  },
+
+  videoSubtitle: {
+    fontSize: 18,
+    fontFamily: "Lexend-Bold",
+    marginTop: 6,
+    color: "#ccc",
+  },
+
+  videoCount: {
+    fontSize: 14,
+    color: "#aaa",
+    marginTop: 6,
+  },
+
+  videoShareBtn: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 30,
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+    color: "#000",
+  },
+  songRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: 350,
   },
 });

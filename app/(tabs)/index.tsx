@@ -98,19 +98,52 @@
 // });
 
 import { useFonts } from "expo-font";
+import { useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
-import { StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 
-SplashScreen.preventAutoHideAsync(); // IMPORTANT
+SplashScreen.preventAutoHideAsync();
+
+const artists = [
+  {
+    id: 1,
+    songName: "Secrets",
+    image: "https://i.scdn.co/image/ab67616d00001e028ad8f5243d6534e03b656c8b",
+  },
+  {
+    id: 2,
+    songName: "FUN",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
+  },
+  {
+    id: 3,
+    songName: "Entergalactic",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzz9F3N-2UGLSuhzezsmNv3zcc2t5HN8libw&s",
+  },
+  {
+    id: 4,
+    songName: "Fi Kan We Kan",
+    image:
+      "https://www.xclusiveland.com/wp-content/uploads/2025/05/BNXN-Buju-Fi-kan-We-kan-Ft-Rema.webp",
+  },
+];
 
 const Home = () => {
   const router = useRouter();
 
   const [loaded] = useFonts({
-    "Lexend-Bold": require("@/assets/fonts/Lexend-Bold.ttf")
+    "Lexend-Bold": require("@/assets/fonts/Lexend-Bold.ttf"),
   });
 
   useEffect(() => {
@@ -123,26 +156,95 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-
-      <Text
+      <StatusBar barStyle="light-content" />
+      <View
         style={{
-          fontSize: 24,
-          fontFamily: "Lexend-Bold",
-          marginBottom: 20,
+          marginTop: 50,
+          marginBottom: 10,
+          paddingHorizontal: 20,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
         }}
       >
-        Your Spotify Wrapped is here!
-      </Text>
+        {artists.map((artist) => (
+          <View
+            key={artist.songName}
+            style={{
+              width: "48%",
+              marginBottom: 20,
+              backgroundColor: "#333",
+              padding: 10,
+              borderRadius: 10,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={{ uri: artist.image }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 10,
+                  marginRight: 10,
+                }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Lexend-Bold",
+                  color: "#fff",
+                  fontSize: 14,
+                }}
+              >
+                {artist.songName}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
 
-      <TouchableOpacity
-        style={styles.spotifyWrappedButton}
-        onPress={() => router.push("/Landing-page")}
+      <View
+        style={{
+          backgroundColor: "white",
+          borderRadius: 20,
+          paddingHorizontal: 20,
+          paddingVertical: 30,
+          alignSelf: "center",
+          alignItems: "center",
+          width: "90%",
+        }}
       >
-        <Text style={{ color: "white", fontFamily: "Lexend-Bold" }}>
-          Spotify Wrapped
+        <Text
+          style={{
+            fontSize: 24,
+            fontFamily: "Lexend-Bold",
+            textAlign: "center",
+          }}
+        >
+          Your 2025
         </Text>
-      </TouchableOpacity>
+        <Text
+          style={{
+            fontSize: 24,
+            fontFamily: "Lexend-Bold",
+            textAlign: "center",
+            marginTop: -10,
+          }}
+        >
+          Wrapped
+        </Text>
+        <Text style={{ textAlign: "center", marginTop: 10 }}>
+          Dive into your year of listening.
+        </Text>
+
+        <TouchableOpacity
+          style={styles.spotifyWrappedButton}
+          onPress={() => router.push("/Landing-page")}
+        >
+          <Text style={{ color: "black", fontFamily: "Lexend-Bold" }}>
+            Let's go.
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -152,14 +254,17 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#222",
+    // justifyContent: "center",
+    // alignItems: "center",
   },
   spotifyWrappedButton: {
-    backgroundColor: "#1DB954",
+    backgroundColor: "orangered",
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     borderRadius: 24,
+    display: "flex",
+    alignItems: "center",
+    marginTop: 20,
   },
 });
