@@ -143,7 +143,7 @@ const Home = () => {
   const router = useRouter();
 
   const [loaded] = useFonts({
-    "Lexend-Bold": require("@/assets/fonts/Lexend-Bold.ttf"),
+    "SpotifyMix-Bold": require("@/assets/fonts/SpotifyMix-Bold.ttf"),
   });
 
   useEffect(() => {
@@ -190,7 +190,7 @@ const Home = () => {
               />
               <Text
                 style={{
-                  fontFamily: "Lexend-Bold",
+                  fontFamily: "SpotifyMix-Bold",
                   color: "#fff",
                   fontSize: 14,
                 }}
@@ -216,7 +216,7 @@ const Home = () => {
         <Text
           style={{
             fontSize: 24,
-            fontFamily: "Lexend-Bold",
+            fontFamily: "SpotifyMix-Bold",
             textAlign: "center",
           }}
         >
@@ -225,7 +225,7 @@ const Home = () => {
         <Text
           style={{
             fontSize: 24,
-            fontFamily: "Lexend-Bold",
+            fontFamily: "SpotifyMix-Bold",
             textAlign: "center",
             marginTop: -10,
           }}
@@ -240,7 +240,7 @@ const Home = () => {
           style={styles.spotifyWrappedButton}
           onPress={() => router.push("/Landing-page")}
         >
-          <Text style={{ color: "black", fontFamily: "Lexend-Bold" }}>
+          <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>
             Let's go.
           </Text>
         </TouchableOpacity>

@@ -46,7 +46,7 @@
       "reactCompiler": true
     },
     "fonts": {
-      "Lexend-Bold": "./assets/fonts/Lexend-Bold.ttf"
+      "SpotifyMix-Bold": "./assets/fonts/SpotifyMix-Bold.ttf"
     }
   }
 }

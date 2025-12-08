@@ -69,7 +69,7 @@ const artists = [
 
 // Reusable Text component
 const AppText = ({ style, children, ...props }: any) => (
-  <Text style={[{ fontFamily: "Lexend-Bold" }, style]} {...props}>
+  <Text style={[{ fontFamily: "SpotifyMix-Bold" }, style]} {...props}>
     {children}
   </Text>
 );
@@ -87,7 +87,7 @@ const Landingpage = () => {
 
   // Load fonts
   const [loaded] = useFonts({
-    "Lexend-Bold": require("@/assets/fonts/Lexend-Bold.ttf"),
+    "SpotifyMix-Bold": require("@/assets/fonts/SpotifyMix-Bold.ttf"),
   });
 
   useEffect(() => {
@@ -196,7 +196,9 @@ const Landingpage = () => {
         {/* PAGE 1 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
           <AppText style={styles.title}>We're ready for you, Kije.</AppText>
-          <AppText style={{ marginTop: 10 }}>Come on Down.</AppText>
+          <Text style={{ marginTop: 20, fontWeight: "light" }}>
+            Come on Down.
+          </Text>
 
           <View style={styles.bigNumberContainer}>
             <AppText style={styles.bigNumber}>2025</AppText>
@@ -206,7 +208,7 @@ const Landingpage = () => {
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
           <AppText style={styles.pageTitle}>You listened.</AppText>
-          <AppText style={{ color: "white", fontSize: 32, lineHeight: 28 }}>
+          <AppText style={{ color: "white", fontSize: 32, lineHeight: 25 }}>
             We counted.
           </AppText>
         </View>
@@ -214,9 +216,11 @@ const Landingpage = () => {
         {/* PAGE 3 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
           <AppText style={styles.bigNumberPage3}>10,992</AppText>
-          <AppText style={styles.pageText}>
-            You Listened for <AppText>10,992</AppText> minutes.
-          </AppText>
+          <Text style={[styles.pageText, { marginBottom: 20, lineHeight: 30 }]}>
+            You listened for <Text style={{ fontWeight: "bold" }}>10,992</Text>{" "}
+            minutes. That's <Text style={{ fontWeight: "bold" }}>7</Text> days,
+            Nice.
+          </Text>
           <AppText style={styles.shareButton}>Share this story</AppText>
         </View>
 
@@ -236,9 +240,9 @@ const Landingpage = () => {
 
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <AppText style={{ fontSize: 24, textAlign: "center" }}>
+          <Text style={{ fontSize: 36, marginBottom: 20, textAlign: "center", fontFamily: "SpotifyMix-Bold", }}>
             Your top genres
-          </AppText>
+          </Text>
           {topGenres.map((genre) => (
             <View key={genre.rank} style={styles.genreRow1}>
               <AppText style={styles.genreRank}>{genre.rank}</AppText>
@@ -258,7 +262,7 @@ const Landingpage = () => {
               width: 400,
               fontSize: 48,
               textAlign: "center",
-              fontFamily: "Lexend-Bold",
+              fontFamily: "SpotifyMix-Bold",
             }}
           >
             Age is just
@@ -267,7 +271,7 @@ const Landingpage = () => {
             style={{
               fontSize: 48,
               textAlign: "center",
-              fontFamily: "Lexend-Bold",
+              fontFamily: "SpotifyMix-Bold",
               marginTop: -20,
             }}
           >
@@ -275,7 +279,7 @@ const Landingpage = () => {
           </Text>
           <Text
             style={{
-              marginTop: 10,
+              marginTop: 20,
               fontSize: 16,
               textAlign: "center",
               fontWeight: "light",
@@ -391,11 +395,11 @@ const Landingpage = () => {
           </View>
 
           <Image
-              source={{
-                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
-              }}
-              style={styles.albumCover}
-            />
+            source={{
+              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
+            }}
+            style={styles.albumCover}
+          />
 
           {/* Text Section */}
           <View style={{ marginTop: 40, alignItems: "center" }}>
@@ -421,7 +425,7 @@ const Landingpage = () => {
               paddingHorizontal: 20,
               paddingVertical: 5,
               textAlign: "center",
-              marginBottom: 20,
+              marginBottom: 40,
             }}
           >
             Your top songs
@@ -446,16 +450,16 @@ const Landingpage = () => {
                 <Text
                   style={{
                     fontFamily: "Lexend-Bold",
-                    marginBottom: 10,
+                    marginBottom: 0,
                     color: "#fff",
-                    fontSize: 16,
+                    fontSize: 26,
                   }}
                 >
                   {artist.songName}
                 </Text>
                 <Text
                   style={{
-                    marginBottom: 10,
+                    marginBottom: 0,
                     color: "#fff",
                   }}
                 >
@@ -464,6 +468,11 @@ const Landingpage = () => {
               </View>
             </View>
           ))}
+
+          {/* Share Button */}
+          <View style={{ marginTop: 30 }}>
+            <Text style={styles.videoShareBtn}>Share this story</Text>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -481,20 +490,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 40,
+    fontSize: 30,
     textAlign: "center",
-    lineHeight: 46,
+    lineHeight: 30,
+    width: 250,
   },
   bigNumberContainer: { position: "absolute", bottom: 40 },
   bigNumber: {
-    fontSize: 210,
+    fontSize: 200,
+    fontWeight: "bold",
+    fontStyle: "italic",
     color: "orangered",
     letterSpacing: -30,
   },
   pageTitle: { fontSize: 32, color: "white" },
   bigNumberPage3: {
-    fontSize: 110,
-    color: "#DDA0FF",
+    fontSize: 115,
+    color: "#CCCCFF",
     textShadowColor: "white",
     textShadowOffset: { width: 6, height: 3 },
     textShadowRadius: 6,
@@ -523,10 +535,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   page4Title: {
-    fontSize: 28,
+    fontSize: 38,
     color: "#222",
     textAlign: "center",
-    lineHeight: 30,
+    lineHeight: 38,
   },
   genreRow1: {
     marginTop: 10,
@@ -622,4 +634,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 350,
   },
+  overlayVideo: {
+  position: "absolute",
+  width: 200,
+  height: 120,
+  top: "30%",     // move video down/up
+  left: "50%",
+  transform: [{ translateX: -100 }], // center horizontally
+  borderRadius: 10,
+},
 });
