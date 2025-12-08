@@ -1,13 +1,15 @@
 import TopHeader from "@/components/TopHeader";
+import { useNavigation } from "@react-navigation/native";
 import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
+import { router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useRef, useState } from "react";
-// import RemaVideo from "@/assets/videos/rema.mp4";
 import {
   Dimensions,
   Image,
   ScrollView,
+  Share,
   StatusBar,
   StyleSheet,
   Text,
@@ -18,8 +20,9 @@ const { height } = Dimensions.get("window");
 
 const songs = [
   require("@/assets/music/CHPTRS_-_Last_Chance_Alt_Version__CeeNaija.com_.mp3"),
-  require("@/assets/music/BNXN-Ft-Soweto-Gospel-Choir-In-Jesus-Name-(TrendyBeatz.com).mp3"),
-  require("@/assets/music/CHPTRS_-_Last_Chance_Alt_Version__CeeNaija.com_.mp3"),
+  require("@/assets/music/BNXN-In-Jesus-Name-ft-Soweto-Gospel-Choir.mp3"),
+  require("@/assets/music/Rema-FUN.mp3"),
+  // require("@/assets/music/The-Weeknd-Secrets.mp3"),
 ];
 
 const topGenres = [
@@ -103,15 +106,15 @@ const Landingpage = () => {
   if (!loaded) return null;
 
   // Go to previous page
-  const goBack = () => {
-    const newPage = Math.max(0, currentPageRef.current - 1);
-    currentPageRef.current = newPage;
+  // const goBack = () => {
+  //   const newPage = Math.max(0, currentPageRef.current - 1);
+  //   currentPageRef.current = newPage;
 
-    scrollViewRef.current?.scrollTo({
-      y: newPage * height,
-      animated: true,
-    });
-  };
+  //   scrollViewRef.current?.scrollTo({
+  //     y: newPage * height,
+  //     animated: true,
+  //   });
+  // };
 
   // Play song
   const playSongForPage = async (pageIndex: number) => {
@@ -169,6 +172,43 @@ const Landingpage = () => {
     }
   };
 
+  // Share Button
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "Check out my Spotify 2025 Wrapped!",
+        url: "https://yourapp.com/wrapped",
+      });
+
+      if (result.action === Share.sharedAction) {
+        console.log("Shared successfully");
+      } else if (result.action === Share.dismissedAction) {
+        console.log("Share dismissed");
+      }
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : String(error));
+    }
+  };
+
+  // Inside Landingpage component
+  const navigation = useNavigation();
+
+  // Go to previous page or Landing page
+  const goBack = () => {
+    if (currentPageRef.current === 0) {
+      // Navigate to Landing page (replace "Landing" with your route name)
+      router.replace("/Landing-page");
+    } else {
+      const newPage = Math.max(0, currentPageRef.current - 1);
+      currentPageRef.current = newPage;
+
+      scrollViewRef.current?.scrollTo({
+        y: newPage * height,
+        animated: true,
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -180,7 +220,7 @@ const Landingpage = () => {
       <TopHeader
         isDarkBackground={isDarkHeader}
         muted={muted}
-        onBack={goBack}
+        onBack={goBack} // <-- updated function
         onToggleMute={() => setMuted(!muted)}
       />
 
@@ -240,7 +280,14 @@ const Landingpage = () => {
 
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <Text style={{ fontSize: 36, marginBottom: 20, textAlign: "center", fontFamily: "SpotifyMix-Bold", }}>
+          <Text
+            style={{
+              fontSize: 36,
+              marginBottom: 20,
+              textAlign: "center",
+              fontFamily: "SpotifyMix-Bold",
+            }}
+          >
             Your top genres
           </Text>
           {topGenres.map((genre) => (
@@ -296,7 +343,7 @@ const Landingpage = () => {
               width: 400,
               fontSize: 30,
               textAlign: "center",
-              fontFamily: "Lexend-Bold",
+              fontFamily: "SpotifyMix-Bold",
             }}
           >
             Your listening age
@@ -321,9 +368,15 @@ const Landingpage = () => {
 
         {/* PAGE 8 */}
         <View style={[styles.page, { backgroundColor: "#222" }]}>
-          <Text style={{ fontSize: 32, color: "white", textAlign: "center" }}>
-            You listened to <Text style={{ fontWeight: "bold" }}>1,261</Text>{" "}
-            songs this year.
+          <Text
+            style={{
+              fontSize: 32,
+              fontFamily: "SpotifyMix-Bold",
+              color: "white",
+              textAlign: "center",
+            }}
+          >
+            You listened to 1,261 songs this year.
           </Text>
           <Text style={{ color: "white", marginTop: 20 }}>
             But can you guess your #1?
@@ -335,7 +388,7 @@ const Landingpage = () => {
           <Text
             style={{
               fontSize: 24,
-              fontFamily: "Lexend-Bold",
+              fontFamily: "SpotifyMix-Bold",
               color: "white",
               textAlign: "center",
             }}
@@ -358,7 +411,7 @@ const Landingpage = () => {
               <View>
                 <Text
                   style={{
-                    fontFamily: "Lexend-Bold",
+                    fontFamily: "SpotifyMix-Bold",
                     marginBottom: 10,
                     color: "#fff",
                     fontSize: 16,
@@ -405,7 +458,9 @@ const Landingpage = () => {
           <View style={{ marginTop: 40, alignItems: "center" }}>
             <Text style={styles.videoHeading}>Your top song</Text>
             <Text style={styles.videoSubtitle}>FUN by Rema</Text>
-            <Text style={styles.videoCount}>You listened 46 times.</Text>
+            <Text style={styles.videoCount}>
+              You listened <Text style={{ fontWeight: "bold" }}>46</Text> times.
+            </Text>
           </View>
 
           {/* Share Button */}
@@ -474,6 +529,77 @@ const Landingpage = () => {
             <Text style={styles.videoShareBtn}>Share this story</Text>
           </View>
         </View>
+
+        {/* PAGE 8 */}
+        <View style={[styles.page, { backgroundColor: "#222" }]}>
+          <View
+            style={{
+              alignItems: "center",
+              backgroundColor: "#fff",
+              padding: 20,
+              borderRadius: 10,
+              width: "90%",
+              height: 400,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 50,
+                fontFamily: "SpotifyMix-Bold",
+                color: "#222",
+                textAlign: "center",
+              }}
+            >
+              Your
+            </Text>
+            <Text
+              style={{
+                fontSize: 50,
+                fontFamily: "SpotifyMix-Bold",
+                color: "#222",
+                textAlign: "center",
+                marginTop: -25,
+              }}
+            >
+              Top Songs
+            </Text>
+            <View style={{ position: "absolute", bottom: -45 }}>
+              <Text
+                style={{
+                  fontSize: 170,
+                  // fontFamily: "Spotify-Bold",
+                  fontWeight: "bold",
+                  color: "#CCCCFF",
+                  textAlign: "center",
+                  letterSpacing: -20,
+                  fontStyle: "italic",
+                }}
+              >
+                2025
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 40,
+              textAlign: "center",
+              fontFamily: "SpotifyMix-Bold",
+              marginTop: 20,
+              lineHeight: 35,
+            }}
+          >
+            We made you a playlist of all your favourites.
+          </Text>
+
+          {/* Share Button */}
+          <View style={{ marginTop: 30 }}>
+            <Text style={styles.videoShareBtn} onPress={onShare}>
+              Add to Your Library
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -519,12 +645,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   listeningAge: {
-    marginTop: -70,
+    marginTop: 0,
     fontSize: 250,
-    color: "#1ED760",
+    color: "#93C572",
     textShadowColor: "black",
-    textShadowOffset: { width: 5, height: 1 },
-    textShadowRadius: 6,
+    textShadowOffset: { width: 2, height: 1 },
+    textShadowRadius: 1,
   },
   shareButton: {
     backgroundColor: "#fff",
@@ -601,22 +727,22 @@ const styles = StyleSheet.create({
   },
 
   videoHeading: {
-    fontSize: 30,
-    fontFamily: "Lexend-Bold",
+    fontSize: 34,
+    fontFamily: "SpotifyMix-Bold",
     color: "white",
   },
 
   videoSubtitle: {
     fontSize: 18,
-    fontFamily: "Lexend-Bold",
-    marginTop: 6,
-    color: "#ccc",
+    fontFamily: "SpotifyMix-Bold",
+    marginTop: -5,
+    color: "#fff",
   },
 
   videoCount: {
     fontSize: 14,
-    color: "#aaa",
-    marginTop: 6,
+    color: "#fff",
+    marginTop: 22,
   },
 
   videoShareBtn: {
@@ -634,13 +760,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 350,
   },
-  overlayVideo: {
-  position: "absolute",
-  width: 200,
-  height: 120,
-  top: "30%",     // move video down/up
-  left: "50%",
-  transform: [{ translateX: -100 }], // center horizontally
-  borderRadius: 10,
-},
 });
