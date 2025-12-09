@@ -261,7 +261,12 @@ const Landingpage = () => {
             minutes. That's <Text style={{ fontWeight: "bold" }}>7</Text> days,
             Nice.
           </Text>
-          <AppText style={styles.shareButton}>Share this story</AppText>
+          <Text
+            style={[styles.shareButton, { fontFamily: "SpotifyMix-Bold" }]}
+            onPress={onShare}
+          >
+            Share this story
+          </Text>
         </View>
 
         {/* PAGE 4 */}
@@ -298,7 +303,19 @@ const Landingpage = () => {
           ))}
 
           <View style={{ alignItems: "center", marginTop: 20 }}>
-            <AppText style={styles.shareButtonBlack}>Share this story</AppText>
+            <Text
+              style={[
+                styles.shareButton,
+                {
+                  fontFamily: "SpotifyMix-Bold",
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              ]}
+              onPress={onShare}
+            >
+              Share this story
+            </Text>
           </View>
         </View>
 
@@ -362,7 +379,19 @@ const Landingpage = () => {
             Since you listen to mostly new music. Your taste is trending.
           </Text>
           <View style={{ alignItems: "center", marginTop: 20 }}>
-            <AppText style={styles.shareButtonBlack}>Share this story</AppText>
+            <Text
+              style={[
+                styles.shareButton,
+                {
+                  fontFamily: "SpotifyMix-Bold",
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              ]}
+              onPress={onShare}
+            >
+              Share this story
+            </Text>
           </View>
         </View>
 
@@ -465,7 +494,12 @@ const Landingpage = () => {
 
           {/* Share Button */}
           <View style={{ marginTop: 30 }}>
-            <Text style={styles.videoShareBtn}>Share this story</Text>
+            <Text
+              style={[styles.shareButton, { fontFamily: "SpotifyMix-Bold" }]}
+              onPress={onShare}
+            >
+              Share this story
+            </Text>
           </View>
         </View>
 
@@ -526,7 +560,12 @@ const Landingpage = () => {
 
           {/* Share Button */}
           <View style={{ marginTop: 30 }}>
-            <Text style={styles.videoShareBtn}>Share this story</Text>
+            <Text
+              style={[styles.shareButton, { fontFamily: "SpotifyMix-Bold" }]}
+              onPress={onShare}
+            >
+              Share this story
+            </Text>
           </View>
         </View>
 
@@ -634,7 +673,7 @@ const styles = StyleSheet.create({
     fontSize: 115,
     color: "#CCCCFF",
     textShadowColor: "white",
-    textShadowOffset: { width: 6, height: 3 },
+    textShadowOffset: { width: 4, height: 1 },
     textShadowRadius: 6,
   },
   pageText: {
