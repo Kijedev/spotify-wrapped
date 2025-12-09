@@ -79,14 +79,12 @@ const Home = () => {
         }}
       >
         <Image
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/174/174872.png",
-          }}
+          source={require("@/assets/images/Kije.jpg")}
           style={{
             width: 30,
             height: 30,
-            borderRadius: 10,
-            marginRight: 0,
+            borderRadius: 50,
+            marginTop: 1,
           }}
         />
         <Text

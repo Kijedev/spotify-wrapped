@@ -1,5 +1,4 @@
 import TopHeader from "@/components/TopHeader";
-import { useNavigation } from "@react-navigation/native";
 import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
@@ -22,7 +21,7 @@ const songs = [
   require("@/assets/music/CHPTRS_-_Last_Chance_Alt_Version__CeeNaija.com_.mp3"),
   require("@/assets/music/BNXN-In-Jesus-Name-ft-Soweto-Gospel-Choir.mp3"),
   require("@/assets/music/Rema-FUN.mp3"),
-  // require("@/assets/music/The-Weeknd-Secrets.mp3"),
+  require("@/assets/music/The-Weeknd-Secrets.mp3"),
 ];
 
 const topGenres = [
@@ -105,17 +104,6 @@ const Landingpage = () => {
 
   if (!loaded) return null;
 
-  // Go to previous page
-  // const goBack = () => {
-  //   const newPage = Math.max(0, currentPageRef.current - 1);
-  //   currentPageRef.current = newPage;
-
-  //   scrollViewRef.current?.scrollTo({
-  //     y: newPage * height,
-  //     animated: true,
-  //   });
-  // };
-
   // Play song
   const playSongForPage = async (pageIndex: number) => {
     try {
@@ -165,9 +153,9 @@ const Landingpage = () => {
         whitePages.includes(index) ? "dark-content" : "light-content"
       );
 
-      // Change song on even pages
-      if (index % 2 === 0) {
-        playSongForPage(index / 2);
+      // Change song on odd pages
+      if (index % 3 === 0) {
+        playSongForPage(index / 3);
       }
     }
   };
@@ -190,14 +178,14 @@ const Landingpage = () => {
     }
   };
 
-  // Inside Landingpage component
-  const navigation = useNavigation();
-
-  // Go to previous page or Landing page
+  // Go to Landing page
   const goBack = () => {
     if (currentPageRef.current === 0) {
-      // Navigate to Landing page (replace "Landing" with your route name)
-      router.replace("/Landing-page");
+      try {
+        router.push("/");
+      } catch (e) {
+        router.replace("/");
+      }
     } else {
       const newPage = Math.max(0, currentPageRef.current - 1);
       currentPageRef.current = newPage;
