@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.kijeosowo23.spotifywrapped"
     },
     "web": {
       "output": "static",
@@ -47,6 +48,12 @@
     },
     "fonts": {
       "SpotifyMix-Bold": "./assets/fonts/SpotifyMix-Bold.ttf"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f6cc8d68-a5b2-46bc-8ce6-5da910318c9c"
+      }
     }
   }
 }
