@@ -234,7 +234,7 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 2 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <AppText style={styles.pageTitle}>You listened.</AppText>
           <AppText style={{ color: "white", fontSize: 32, lineHeight: 25 }}>
             We counted.
@@ -242,7 +242,7 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 3 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <AppText style={styles.bigNumberPage3}>10,992</AppText>
           <Text style={[styles.pageText, { marginBottom: 20, lineHeight: 30 }]}>
             You listened for <Text style={{ fontWeight: "bold" }}>10,992</Text>{" "}
@@ -384,7 +384,7 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 8 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <Text
             style={{
               fontSize: 32,
@@ -401,7 +401,7 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 9 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <Text
             style={{
               fontSize: 24,
@@ -450,7 +450,7 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 10 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <View style={styles.videoCard}>
             {/* Video */}
             <Video
@@ -492,12 +492,12 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 11 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <Text
             style={{
               fontSize: 24,
-              fontFamily: "Lexend-Bold",
-              color: "#222",
+              fontFamily: "SpotifyMix-Bold",
+              color: "#111",
               backgroundColor: "white",
               paddingHorizontal: 20,
               paddingVertical: 5,
@@ -526,7 +526,7 @@ const Landingpage = () => {
               <View>
                 <Text
                   style={{
-                    fontFamily: "Lexend-Bold",
+                    fontFamily: "SpotifyMix-Bold",
                     marginBottom: 0,
                     color: "#fff",
                     fontSize: 26,
@@ -558,7 +558,7 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 8 */}
-        <View style={[styles.page, { backgroundColor: "#222" }]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <View
             style={{
               alignItems: "center",
@@ -614,7 +614,7 @@ const Landingpage = () => {
               textAlign: "center",
               fontFamily: "SpotifyMix-Bold",
               marginTop: 20,
-              lineHeight: 35,
+              lineHeight: 40,
             }}
           >
             We made you a playlist of all your favourites.
@@ -704,7 +704,7 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     paddingHorizontal: 10,
     paddingVertical: 10,
-    backgroundColor: "#222",
+    backgroundColor: "#111",
     marginTop: 30,
     flexDirection: "row",
     alignItems: "center",

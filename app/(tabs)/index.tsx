@@ -52,6 +52,29 @@ const artists = [
   },
 ];
 
+const rotation = [
+  {
+    id: 1,
+    songName: "Secrets",
+    name: "The weeknd",
+    image: "https://i.scdn.co/image/ab67616d00001e028ad8f5243d6534e03b656c8b",
+  },
+  {
+    id: 2,
+    songName: "FUN",
+    name: "Rema",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
+  },
+  {
+    id: 3,
+    songName: "Entergalactic",
+    name: "Kid Cudi",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzz9F3N-2UGLSuhzezsmNv3zcc2t5HN8libw&s",
+  },
+];
+
 const Home = () => {
   const router = useRouter();
 
@@ -89,8 +112,8 @@ const Home = () => {
         />
         <Text
           style={{
-            color: "white",
-            backgroundColor: "#555",
+            color: "black",
+            backgroundColor: "#1DB954",
             paddingVertical: 5,
             paddingHorizontal: 20,
             borderRadius: 50,
@@ -101,7 +124,7 @@ const Home = () => {
         <Text
           style={{
             color: "white",
-            backgroundColor: "#555",
+            backgroundColor: "#222",
             paddingVertical: 5,
             paddingHorizontal: 20,
             borderRadius: 50,
@@ -114,7 +137,7 @@ const Home = () => {
         <Text
           style={{
             color: "white",
-            backgroundColor: "#555",
+            backgroundColor: "#222",
             paddingVertical: 5,
             paddingHorizontal: 20,
             borderRadius: 50,
@@ -125,7 +148,7 @@ const Home = () => {
         <Text
           style={{
             color: "white",
-            backgroundColor: "#555",
+            backgroundColor: "#222",
             paddingVertical: 5,
             paddingHorizontal: 20,
             borderRadius: 50,
@@ -150,7 +173,7 @@ const Home = () => {
             style={{
               width: "48%",
               marginBottom: 10,
-              backgroundColor: "#333",
+              backgroundColor: "#222",
               padding: 0,
               borderRadius: 5,
             }}
@@ -222,6 +245,79 @@ const Home = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      <View>
+        <Text
+          style={{
+            color: "white",
+            fontFamily: "SpotifyMix-Bold",
+            fontSize: 20,
+            paddingVertical: 20,
+            paddingHorizontal: 20,
+          }}
+        >
+          Your recent rotation
+        </Text>
+
+        <View
+          style={{
+            marginTop: 0,
+            marginBottom: 10,
+            paddingHorizontal: 20,
+            flexDirection: "column",
+          }}
+        >
+          {rotation.map((artist) => (
+            <View
+              key={artist.songName}
+              style={{
+                marginBottom: 0,
+                padding: 0,
+                borderRadius: 5,
+              }}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={{ uri: artist.image }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 5,
+                    marginRight: 10,
+                  }}
+                />
+
+                <View>
+                  <Text
+                    style={{
+                      fontFamily: "SpotifyMix-Bold",
+                      color: "#fff",
+                      fontSize: 14,
+                    }}
+                  >
+                    {artist.songName}
+                  </Text>
+
+                  <Text style={{ color: "#fff", fontSize: 14 }}>
+                    {artist.name}
+                  </Text>
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 18,
+                  marginTop: 0,
+                  alignSelf: "flex-end",
+                }}
+              >
+                ⋯
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -231,7 +327,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#222",
+    backgroundColor: "#111",
     // justifyContent: "center",
     // alignItems: "center",
   },
