@@ -40,15 +40,14 @@ const artists = [
   },
   {
     id: 5,
-    songName: "Entergalactic",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzz9F3N-2UGLSuhzezsmNv3zcc2t5HN8libw&s",
+    songName: "Lalala",
+    image: "https://notjustok.com/wp-content/uploads/2025/11/IMG_5491.jpeg",
   },
   {
     id: 6,
-    songName: "Fi Kan We Kan",
+    songName: "Waist",
     image:
-      "https://www.xclusiveland.com/wp-content/uploads/2025/05/BNXN-Buju-Fi-kan-We-kan-Ft-Rema.webp",
+      "https://i0.wp.com/highlifeng.com/yoruba/wp-content/uploads/2025/11/Omah-Lay-Waist-artwork-1.jpg?resize=274%2C300&ssl=1",
   },
 ];
 
@@ -68,10 +67,9 @@ const rotation = [
   },
   {
     id: 3,
-    songName: "Entergalactic",
-    name: "Kid Cudi",
+    songName: "Fi Kan We Kan",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzz9F3N-2UGLSuhzezsmNv3zcc2t5HN8libw&s",
+      "https://www.xclusiveland.com/wp-content/uploads/2025/05/BNXN-Buju-Fi-kan-We-kan-Ft-Rema.webp",
   },
 ];
 
