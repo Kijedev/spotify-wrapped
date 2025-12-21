@@ -4,12 +4,14 @@ import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import {
   Image,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+// import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync();
@@ -89,187 +91,100 @@ const Home = () => {
   if (!loaded) return null;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          marginTop: 10,
-          marginBottom: 20,
-        }}
-      >
-        <Image
-          source={require("@/assets/images/Kije.jpg")}
+    <SafeAreaView
+      // edges={["left", "right", "bottom"]}
+      style={styles.container}
+    >
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="#111"
+        translucent={false}
+      />
+
+      <ScrollView>
+        <View
           style={{
-            width: 30,
-            height: 30,
-            borderRadius: 50,
-            marginTop: 1,
-          }}
-        />
-        <Text
-          style={{
-            color: "black",
-            backgroundColor: "#1DB954",
-            paddingVertical: 5,
-            paddingHorizontal: 20,
-            borderRadius: 50,
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            gap: 5,
+            paddingTop: 10,
+            marginBottom: 20,
+            paddingHorizontal: 10,
           }}
         >
-          All
-        </Text>
-        <Text
-          style={{
-            color: "white",
-            backgroundColor: "#222",
-            paddingVertical: 5,
-            paddingHorizontal: 20,
-            borderRadius: 50,
-            borderWidth: 1,
-            borderColor: "white",
-          }}
-        >
-          Wrapped
-        </Text>
-        <Text
-          style={{
-            color: "white",
-            backgroundColor: "#222",
-            paddingVertical: 5,
-            paddingHorizontal: 20,
-            borderRadius: 50,
-          }}
-        >
-          Music
-        </Text>
-        <Text
-          style={{
-            color: "white",
-            backgroundColor: "#222",
-            paddingVertical: 5,
-            paddingHorizontal: 20,
-            borderRadius: 50,
-          }}
-        >
-          Podcast
-        </Text>
-      </View>
-      <View
-        style={{
-          marginTop: 0,
-          marginBottom: 10,
-          paddingHorizontal: 20,
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
-        {artists.map((artist) => (
-          <View
-            key={artist.songName}
+          <Image
+            source={require("@/assets/images/Kije.jpg")}
             style={{
-              width: "48%",
-              marginBottom: 10,
-              backgroundColor: "#222",
-              padding: 0,
-              borderRadius: 5,
+              width: 30,
+              height: 30,
+              borderRadius: 50,
+              marginTop: 1,
+            }}
+          />
+          <Text
+            style={{
+              color: "black",
+              backgroundColor: "#1DB954",
+              paddingVertical: 5,
+              paddingHorizontal: 20,
+              borderRadius: 50,
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={{ uri: artist.image }}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 10,
-                  marginRight: 10,
-                }}
-              />
-              <Text
-                style={{
-                  fontFamily: "SpotifyMix-Bold",
-                  color: "#fff",
-                  fontSize: 14,
-                }}
-              >
-                {artist.songName}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </View>
-
-      <View
-        style={{
-          backgroundColor: "white",
-          borderRadius: 20,
-          paddingHorizontal: 20,
-          paddingVertical: 30,
-          alignSelf: "center",
-          alignItems: "center",
-          width: "90%",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 24,
-            fontFamily: "SpotifyMix-Bold",
-            textAlign: "center",
-          }}
-        >
-          Your 2025
-        </Text>
-        <Text
-          style={{
-            fontSize: 24,
-            fontFamily: "SpotifyMix-Bold",
-            textAlign: "center",
-            marginTop: -10,
-          }}
-        >
-          Wrapped
-        </Text>
-        <Text style={{ textAlign: "center", marginTop: 10 }}>
-          Dive into your year of listening.
-        </Text>
-
-        <TouchableOpacity
-          style={styles.spotifyWrappedButton}
-          onPress={() => router.push("/Landing-page")}
-        >
-          <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>
-            Let's go.
+            All
           </Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        <Text
-          style={{
-            color: "white",
-            fontFamily: "SpotifyMix-Bold",
-            fontSize: 20,
-            paddingVertical: 20,
-            paddingHorizontal: 20,
-          }}
-        >
-          Your recent rotation
-        </Text>
-
+          <Text
+            style={{
+              color: "white",
+              backgroundColor: "#222",
+              paddingVertical: 5,
+              paddingHorizontal: 20,
+              borderRadius: 50,
+              borderWidth: 1,
+              borderColor: "white",
+            }}
+          >
+            Wrapped
+          </Text>
+          <Text
+            style={{
+              color: "white",
+              backgroundColor: "#222",
+              paddingVertical: 5,
+              paddingHorizontal: 20,
+              borderRadius: 50,
+            }}
+          >
+            Music
+          </Text>
+          <Text
+            style={{
+              color: "white",
+              backgroundColor: "#222",
+              paddingVertical: 5,
+              paddingHorizontal: 20,
+              borderRadius: 50,
+            }}
+          >
+            Podcast
+          </Text>
+        </View>
         <View
           style={{
             marginTop: 0,
             marginBottom: 10,
-            paddingHorizontal: 20,
-            flexDirection: "column",
+            paddingHorizontal: 10,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
           }}
         >
-          {rotation.map((artist) => (
+          {artists.map((artist) => (
             <View
               key={artist.songName}
               style={{
-                marginBottom: 0,
+                width: "48%",
+                marginBottom: 10,
+                backgroundColor: "#222",
                 padding: 0,
                 borderRadius: 5,
               }}
@@ -280,42 +195,141 @@ const Home = () => {
                   style={{
                     width: 50,
                     height: 50,
-                    borderRadius: 5,
+                    borderRadius: 10,
                     marginRight: 10,
                   }}
                 />
-
-                <View>
-                  <Text
-                    style={{
-                      fontFamily: "SpotifyMix-Bold",
-                      color: "#fff",
-                      fontSize: 14,
-                    }}
-                  >
-                    {artist.songName}
-                  </Text>
-
-                  <Text style={{ color: "#fff", fontSize: 14 }}>
-                    {artist.name}
-                  </Text>
-                </View>
+                <Text
+                  style={{
+                    fontFamily: "SpotifyMix-Bold",
+                    color: "#fff",
+                    fontSize: 14,
+                  }}
+                >
+                  {artist.songName}
+                </Text>
               </View>
-
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 18,
-                  marginTop: 0,
-                  alignSelf: "flex-end",
-                }}
-              >
-                ⋯
-              </Text>
             </View>
           ))}
         </View>
-      </View>
+
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 20,
+            paddingHorizontal: 20,
+            paddingVertical: 30,
+            alignSelf: "center",
+            alignItems: "center",
+            width: "90%",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: "SpotifyMix-Bold",
+              textAlign: "center",
+            }}
+          >
+            Your 2025
+          </Text>
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: "SpotifyMix-Bold",
+              textAlign: "center",
+              marginTop: -10,
+            }}
+          >
+            Wrapped
+          </Text>
+          <Text style={{ textAlign: "center", marginTop: 10 }}>
+            Dive into your year of listening.
+          </Text>
+
+          <TouchableOpacity
+            style={styles.spotifyWrappedButton}
+            onPress={() => router.push("/Landing-page")}
+          >
+            <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>
+              Let's go.
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "SpotifyMix-Bold",
+              fontSize: 20,
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+            }}
+          >
+            Your recent rotation
+          </Text>
+
+          <View
+            style={{
+              marginTop: 0,
+              marginBottom: 10,
+              paddingHorizontal: 20,
+              flexDirection: "column",
+            }}
+          >
+            {rotation.map((artist) => (
+              <View
+                key={artist.songName}
+                style={{
+                  marginBottom: 0,
+                  padding: 0,
+                  borderRadius: 5,
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Image
+                    source={{ uri: artist.image }}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 5,
+                      marginRight: 10,
+                    }}
+                  />
+
+                  <View>
+                    <Text
+                      style={{
+                        fontFamily: "SpotifyMix-Bold",
+                        color: "#fff",
+                        fontSize: 14,
+                      }}
+                    >
+                      {artist.songName}
+                    </Text>
+
+                    <Text style={{ color: "#fff", fontSize: 14 }}>
+                      {artist.name}
+                    </Text>
+                  </View>
+                </View>
+
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 18,
+                    marginTop: 0,
+                    alignSelf: "flex-end",
+                  }}
+                >
+                  ⋯
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

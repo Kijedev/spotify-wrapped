@@ -3,22 +3,23 @@ import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
-  isDarkBackground: boolean;
+  isWhiteBackground: boolean;
   muted: boolean;
   onBack: () => void;
   onToggleMute: () => void;
 };
 
 const TopHeader: React.FC<Props> = ({
-  isDarkBackground,
+  isWhiteBackground,
   muted,
   onBack,
   onToggleMute,
 }) => {
-  const iconColor = isDarkBackground ? "white" : "black";
-  const logoSource = isDarkBackground
-    ? require("@/assets/images/logo-white.png")
-    : require("@/assets/images/logo.png");
+  const iconColor = isWhiteBackground ? "black" : "white";
+
+  const logoSource = isWhiteBackground
+    ? require("@/assets/images/logo.png")
+    : require("@/assets/images/logo-white.png");
 
   return (
     <View style={styles.container}>
@@ -44,9 +45,9 @@ export default TopHeader;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 20,
+    top: 0,
     width: "100%",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingTop: 50,
     paddingBottom: 10,
     zIndex: 999,

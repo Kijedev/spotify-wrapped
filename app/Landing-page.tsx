@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
+  Platform,
   ScrollView,
   Share,
   StatusBar,
@@ -135,25 +136,30 @@ const Landingpage = () => {
     if (soundRef.current) soundRef.current.setIsMutedAsync(muted);
   }, [muted]);
 
+  const whitePages = new Set([0, 3, 4]);
+  const isWhitePage = whitePages.has(currentPageRef.current);
+
+  // const whitePages = new Set([0, 3, 4]);
+
   // Detect scroll
   const handleScroll = (event: {
-    nativeEvent: { contentOffset: { y: any } };
+    nativeEvent: { contentOffset: { y: number } };
   }) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
-    const whitePages = [0, 3, 4, 5, 6];
-    setIsDarkHeader(!whitePages.includes(index));
+    const isWhitePage = whitePages.has(index);
+
+    // Header
+    setIsDarkHeader(!isWhitePage);
+
+    // Status bar
+    setStatusBarStyle(isWhitePage ? "dark-content" : "light-content");
 
     if (index !== currentPageRef.current) {
       currentPageRef.current = index;
 
-      // Change status bar
-      setStatusBarStyle(
-        whitePages.includes(index) ? "dark-content" : "light-content"
-      );
-
-      // Change song on odd pages
+      // Change song
       if (index % 3 === 0) {
         playSongForPage(index / 3);
       }
@@ -198,17 +204,22 @@ const Landingpage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isWhitePage ? "#fff" : "#111" },
+      ]}
+    >
       <StatusBar
-        barStyle={statusBarStyle}
-        backgroundColor="transparent"
-        translucent
+        barStyle={isWhitePage ? "dark-content" : "light-content"}
+        backgroundColor={isWhitePage ? "#fff" : "#111"}
+        translucent={false}
       />
 
       <TopHeader
-        isDarkBackground={isDarkHeader}
+        isWhiteBackground={!isDarkHeader}
         muted={muted}
-        onBack={goBack} // <-- updated function
+        onBack={goBack}
         onToggleMute={() => setMuted(!muted)}
       />
 
@@ -236,7 +247,13 @@ const Landingpage = () => {
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
           <AppText style={styles.pageTitle}>You listened.</AppText>
-          <AppText style={{ color: "white", fontSize: 32, lineHeight: 25 }}>
+          <AppText
+            style={{
+              color: "white",
+              fontSize: 32,
+              lineHeight: Platform.OS === "ios" ? 30 : 30,
+            }}
+          >
             We counted.
           </AppText>
         </View>
@@ -308,13 +325,14 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 6 */}
-        <View style={[styles.page]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <Text
             style={{
               width: 400,
               fontSize: 48,
               textAlign: "center",
               fontFamily: "SpotifyMix-Bold",
+              color: "white",
             }}
           >
             Age is just
@@ -325,6 +343,7 @@ const Landingpage = () => {
               textAlign: "center",
               fontFamily: "SpotifyMix-Bold",
               marginTop: -20,
+              color: "white",
             }}
           >
             a number.
@@ -335,6 +354,7 @@ const Landingpage = () => {
               fontSize: 16,
               textAlign: "center",
               fontWeight: "light",
+              color: "white",
             }}
           >
             So don't take this personally.
@@ -342,13 +362,14 @@ const Landingpage = () => {
         </View>
 
         {/* PAGE 7 */}
-        <View style={[styles.page]}>
+        <View style={[styles.page, { backgroundColor: "#111" }]}>
           <Text
             style={{
               width: 400,
               fontSize: 30,
               textAlign: "center",
               fontFamily: "SpotifyMix-Bold",
+              color: "white",
             }}
           >
             Your listening age
@@ -362,6 +383,7 @@ const Landingpage = () => {
               fontWeight: "light",
               maxWidth: 320,
               lineHeight: 26,
+              color: "white",
             }}
           >
             Since you listen to mostly new music. Your taste is trending.
@@ -372,8 +394,8 @@ const Landingpage = () => {
                 styles.shareButton,
                 {
                   fontFamily: "SpotifyMix-Bold",
-                  backgroundColor: "black",
-                  color: "white",
+                  backgroundColor: "white",
+                  color: "#111",
                 },
               ]}
               onPress={onShare}
@@ -408,6 +430,7 @@ const Landingpage = () => {
               fontFamily: "SpotifyMix-Bold",
               color: "white",
               textAlign: "center",
+              marginTop: Platform.OS === "ios" ? -50 : 0,
             }}
           >
             Take your pick.
@@ -514,8 +537,8 @@ const Landingpage = () => {
                 <Image
                   source={{ uri: artist.image }}
                   style={{
-                    width: 100,
-                    height: 100,
+                    width: 80,
+                    height: 80,
                     // borderRadius: 10,
                     borderWidth: 3,
                     borderColor: "#fff",
@@ -563,7 +586,7 @@ const Landingpage = () => {
             style={{
               alignItems: "center",
               backgroundColor: "#fff",
-              padding: 20,
+              padding: 0,
               borderRadius: 10,
               width: "90%",
               height: 400,
@@ -591,15 +614,15 @@ const Landingpage = () => {
             >
               Top Songs
             </Text>
-            <View style={{ position: "absolute", bottom: -45 }}>
+            <View style={{ position: "absolute", bottom: 0 }}>
               <Text
                 style={{
-                  fontSize: 170,
-                  // fontFamily: "Spotify-Bold",
+                  fontSize: 120,
+                  fontFamily: "Spotify-Bold",
                   fontWeight: "bold",
                   color: "#CCCCFF",
                   textAlign: "center",
-                  letterSpacing: -20,
+                  // letterSpacing: 0,
                   fontStyle: "italic",
                 }}
               >
@@ -610,11 +633,11 @@ const Landingpage = () => {
           <Text
             style={{
               color: "white",
-              fontSize: 40,
+              fontSize: 35,
               textAlign: "center",
               fontFamily: "SpotifyMix-Bold",
               marginTop: 20,
-              lineHeight: 40,
+              lineHeight: 35,
             }}
           >
             We made you a playlist of all your favourites.
@@ -648,17 +671,17 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     width: 250,
   },
-  bigNumberContainer: { position: "absolute", bottom: 40 },
+  bigNumberContainer: { position: "absolute", bottom: 60 },
   bigNumber: {
-    fontSize: 200,
+    fontSize: Platform.OS === "ios" ? 130 : 190,
     fontWeight: "bold",
-    fontStyle: "italic",
+    // fontStyle: "italic",
     color: "orangered",
-    letterSpacing: -30,
+    letterSpacing: 0,
   },
   pageTitle: { fontSize: 32, color: "white" },
   bigNumberPage3: {
-    fontSize: 115,
+    fontSize: Platform.OS === "ios" ? 100 : 110,
     color: "#CCCCFF",
     textShadowColor: "white",
     textShadowOffset: { width: 4, height: 1 },
@@ -705,7 +728,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     backgroundColor: "#111",
-    marginTop: 30,
+    marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
     width: 350,
@@ -780,7 +803,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     textAlign: "center",
-    color: "#000",
+    color: "#111",
   },
   songRow: {
     flexDirection: "row",
