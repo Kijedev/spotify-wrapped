@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from "react";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 const create = () => {
   return (
-    <View>
-      <Text>create</Text>
-    </View>
-  )
-}
+    <SafeAreaView>
+      <Text style={{ color: "white", textAlign: "center", fontSize: 50 }}>Create</Text>
+    </SafeAreaView>
+  );
+};
 
-export default create
+export default create;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from "react";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 const premium = () => {
   return (
-    <View>
-      <Text>premium</Text>
-    </View>
-  )
-}
+    <SafeAreaView>
+      <Text style={{ color: "white", textAlign: "center", fontSize: 50 }}>Premium</Text>
+    </SafeAreaView>
+  );
+};
 
-export default premium
+export default premium;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
