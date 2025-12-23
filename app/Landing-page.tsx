@@ -7,7 +7,7 @@ import {
 import TopHeader from "@/components/TopHeader";
 import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -25,8 +25,8 @@ import {
 const { height } = Dimensions.get("window");
 
 const songs = [
-  require("@/assets/music/CHPTRS_-_Last_Chance_Alt_Version__CeeNaija.com_.mp3"),
-  require("@/assets/music/BNXN-In-Jesus-Name-ft-Soweto-Gospel-Choir.mp3"),
+  require("@/assets/music/Young-Jonn-Lalala-ft-Rema-(JustNaija.com).mp3"),
+  require("@/assets/music/CKay-BODY-danz-Ft-Mavo-(JustNaija.com).mp3"),
   require("@/assets/music/Rema-FUN.mp3"),
   require("@/assets/music/The-Weeknd-Secrets.mp3"),
 ];
@@ -84,6 +84,7 @@ const AppText = ({ style, children, ...props }: any) => (
 );
 
 const Landingpage = () => {
+  const pathname = usePathname();
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
@@ -131,11 +132,14 @@ const Landingpage = () => {
 
   // Play first song on mount
   useEffect(() => {
+  if (pathname === "/landing") { // adjust to your landing page route
     playSongForPage(0);
-    return () => {
-      if (soundRef.current) soundRef.current.unloadAsync();
-    };
-  }, []);
+  }
+
+  return () => {
+    if (soundRef.current) soundRef.current.unloadAsync();
+  };
+}, [pathname]);
 
   // Mute/unmute
   useEffect(() => {
@@ -144,8 +148,6 @@ const Landingpage = () => {
 
   const whitePages = new Set([0, 3, 4]);
   const isWhitePage = whitePages.has(currentPage);
-
-  // const whitePages = new Set([0, 3, 4]);
 
   // Detect scroll
   const handleScroll = (event: any) => {
@@ -801,10 +803,10 @@ const Landingpage = () => {
               {/* Share Button */}
               <FadeUp delay={400}>
                 <View style={{ marginTop: 30 }}>
-                <Text style={styles.videoShareBtn} onPress={onShare}>
-                  Add to Your Library
-                </Text>
-              </View>
+                  <Text style={styles.videoShareBtn} onPress={onShare}>
+                    Add to Your Library
+                  </Text>
+                </View>
               </FadeUp>
             </>
           )}
