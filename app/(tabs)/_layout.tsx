@@ -1,21 +1,19 @@
-import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
+import { TabBar } from "@/components/TabBar";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
     <Tabs
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
+        // tabBarButton: HapticTab,
       }}
     >
       {/* Home Tab */}
@@ -24,51 +22,47 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <Ionicons size={28} name="home" color={color} />
           ),
         }}
       />
 
-      {/* Explore / Search Tab */}
+      {/* Search Tab */}
       <Tabs.Screen
         name="explore"
         options={{
           title: "Search",
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} color={color} name="search-outline"></Ionicons>
+            <Ionicons size={28} name="search" color={color} />
           ),
         }}
       />
 
-      {/* Library Tab */}
       <Tabs.Screen
         name="library"
         options={{
-          title: "Your Library",
+          title: "Library",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="music.note.list" color={color} />
+            <Ionicons size={28} name="library" color={color} />
           ),
         }}
       />
 
-      {/* Premium Tab */}
       <Tabs.Screen
         name="premium"
         options={{
           title: "Premium",
           tabBarIcon: ({ color }) => (
-            <Icon name="spotify" size={28} color={color} />
+            <Ionicons size={28} name="diamond-outline" color={color} />
           ),
         }}
       />
-
-      {/* Create Tab */}
       <Tabs.Screen
         name="create"
         options={{
           title: "Create",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="plus.circle.fill" color={color} />
+            <Ionicons size={28} name="add-outline" color={color} />
           ),
         }}
       />
