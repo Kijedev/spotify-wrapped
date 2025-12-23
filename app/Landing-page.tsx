@@ -132,14 +132,15 @@ const Landingpage = () => {
 
   // Play first song on mount
   useEffect(() => {
-  if (pathname === "/landing") { // adjust to your landing page route
-    playSongForPage(0);
-  }
+    if (pathname === "/landing") {
+      // adjust to your landing page route
+      playSongForPage(0);
+    }
 
-  return () => {
-    if (soundRef.current) soundRef.current.unloadAsync();
-  };
-}, [pathname]);
+    return () => {
+      if (soundRef.current) soundRef.current.unloadAsync();
+    };
+  }, [pathname]);
 
   // Mute/unmute
   useEffect(() => {
@@ -832,13 +833,13 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     width: 250,
   },
-  bigNumberContainer: { position: "absolute", bottom: 60 },
+  // bigNumberContainer: { position: "absolute", bottom: 60 },
   bigNumber: {
-    fontSize: Platform.OS === "ios" ? 130 : 160,
+    fontSize: Platform.OS === "ios" ? 160 : 200,
     fontWeight: "bold",
     // fontStyle: "italic",
     color: "orangered",
-    letterSpacing: 0,
+    letterSpacing: Platform.OS === "ios" ? -20 : -30,
   },
   pageTitle: { fontSize: 32, color: "white" },
   bigNumberPage3: {
