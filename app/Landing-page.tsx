@@ -1,4 +1,9 @@
-import { FadeDown, FadeUp } from "@/components/FadeSlideIn";
+import {
+  FadeDown,
+  FadeLeft,
+  FadeRight,
+  FadeUp,
+} from "@/components/FadeSlideIn";
 import TopHeader from "@/components/TopHeader";
 import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
@@ -82,7 +87,7 @@ const Landingpage = () => {
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
-  const currentPageRef = useRef(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
   const [statusBarStyle, setStatusBarStyle] = useState<
     "light-content" | "dark-content"
@@ -138,33 +143,27 @@ const Landingpage = () => {
   }, [muted]);
 
   const whitePages = new Set([0, 3, 4]);
-  const isWhitePage = whitePages.has(currentPageRef.current);
+  const isWhitePage = whitePages.has(currentPage);
 
   // const whitePages = new Set([0, 3, 4]);
 
   // Detect scroll
-  const handleScroll = (event: {
-    nativeEvent: { contentOffset: { y: number } };
-  }) => {
+  const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / height);
 
-    const isWhitePage = whitePages.has(index);
+    if (index !== currentPage) {
+      setCurrentPage(index);
 
-    // Header
-    setIsDarkHeader(!isWhitePage);
-
-    // Status bar
-    setStatusBarStyle(isWhitePage ? "dark-content" : "light-content");
-
-    if (index !== currentPageRef.current) {
-      currentPageRef.current = index;
-
-      // Change song
+      // music logic stays
       if (index % 3 === 0) {
         playSongForPage(index / 3);
       }
     }
+
+    const isWhite = whitePages.has(index);
+    setIsDarkHeader(!isWhite);
+    setStatusBarStyle(isWhite ? "dark-content" : "light-content");
   };
 
   // Share Button
@@ -187,15 +186,15 @@ const Landingpage = () => {
 
   // Go to Landing page
   const goBack = () => {
-    if (currentPageRef.current === 0) {
+    if (currentPage === 0) {
       try {
         router.push("/");
       } catch (e) {
         router.replace("/");
       }
     } else {
-      const newPage = Math.max(0, currentPageRef.current - 1);
-      currentPageRef.current = newPage;
+      const newPage = Math.max(0, currentPage - 1);
+      setCurrentPage(newPage);
 
       scrollViewRef.current?.scrollTo({
         y: newPage * height,
@@ -235,427 +234,580 @@ const Landingpage = () => {
       >
         {/* PAGE 1 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <FadeDown delay={200}>
-            <AppText style={styles.title}>We're ready for you, Kije.</AppText>
-          </FadeDown>
-          <FadeUp delay={500}>
-            <Text style={{ marginTop: 20, fontWeight: "light" }}>
-              Come on Down.
-            </Text>
-          </FadeUp>
+          {currentPage === 0 && (
+            <>
+              <FadeDown delay={300}>
+                <AppText style={styles.title}>
+                  We're ready for you, Kije.
+                </AppText>
+              </FadeDown>
 
-          <View style={styles.bigNumberContainer}>
-            <AppText style={styles.bigNumber}>2025</AppText>
-          </View>
+              <FadeUp delay={500}>
+                <Text
+                  style={{
+                    marginTop: 20,
+                    fontWeight: "300",
+                    textAlign: "center",
+                  }}
+                >
+                  Come on Down.
+                </Text>
+              </FadeUp>
+
+              <View
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  width: "100%",
+                  alignItems: "center",
+                }}
+              >
+                <AppText style={styles.bigNumber}>2025</AppText>
+              </View>
+            </>
+          )}
         </View>
 
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <FadeDown>
-            <AppText style={styles.pageTitle}>You listened.</AppText>
-            <AppText
-              style={{
-                color: "white",
-                fontSize: 32,
-                lineHeight: Platform.OS === "ios" ? 30 : 30,
-              }}
-            >
-              We counted.
-            </AppText>
-          </FadeDown>
+          {currentPage === 1 && (
+            <FadeDown>
+              <FadeUp delay={200}>
+                <AppText style={styles.pageTitle}>You listened.</AppText>
+              </FadeUp>
+              <FadeDown delay={300}>
+                <AppText style={{ color: "white", fontSize: 32 }}>
+                  We counted.
+                </AppText>
+              </FadeDown>
+            </FadeDown>
+          )}
         </View>
 
         {/* PAGE 3 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <AppText style={styles.bigNumberPage3}>10,992</AppText>
-          <Text style={[styles.pageText, { marginBottom: 20, lineHeight: 30 }]}>
-            You listened for <Text style={{ fontWeight: "bold" }}>10,992</Text>{" "}
-            minutes. That's <Text style={{ fontWeight: "bold" }}>7</Text> days,
-            Nice.
-          </Text>
-          <Text
-            style={[styles.shareButton, { fontFamily: "SpotifyMix-Bold" }]}
-            onPress={onShare}
-          >
-            Share this story
-          </Text>
+          {currentPage === 2 && (
+            <>
+              <FadeRight delay={200}>
+                <AppText style={styles.bigNumberPage3}>10,992</AppText>
+              </FadeRight>
+              <FadeUp delay={400}>
+                <Text
+                  style={[
+                    styles.pageText,
+                    { marginBottom: 20, lineHeight: 30 },
+                  ]}
+                >
+                  You listened for{" "}
+                  <Text style={{ fontWeight: "bold" }}>10,992</Text> minutes.
+                  That's <Text style={{ fontWeight: "bold" }}>7</Text> days,
+                  Nice.
+                </Text>
+              </FadeUp>
+              <FadeDown delay={500}>
+                <Text
+                  style={[
+                    styles.shareButton,
+                    { fontFamily: "SpotifyMix-Bold" },
+                  ]}
+                  onPress={onShare}
+                >
+                  Share this story
+                </Text>
+              </FadeDown>
+            </>
+          )}
         </View>
 
         {/* PAGE 4 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <AppText style={styles.page4Title}>
-            Taste like yours can't be defined. But let's try anyway.
-          </AppText>
-          <Text style={{ marginTop: 10, fontSize: 16, textAlign: "center" }}>
-            You listened to <Text style={{ fontWeight: "bold" }}>156</Text>{" "}
-            genres.
-          </Text>
-          <AppText style={styles.pageText}>
-            You Listened to <AppText>156</AppText> genres.
-          </AppText>
+          {currentPage === 3 && (
+            <>
+              <FadeUp delay={200}>
+                <Text
+                  style={[
+                    styles.page4Title,
+                    {
+                      fontWeight: "bold",
+                      fontFamily: "SpotifyMix-Bold",
+                      fontSize: Platform.OS === "ios" ? 30 : 40,
+                      lineHeight: Platform.OS === "ios" ? 30 : 45,
+                    },
+                  ]}
+                >
+                  Taste like yours can't be defined. But let's try anyway.
+                </Text>
+              </FadeUp>
+              <FadeDown delay={300}>
+                <Text
+                  style={{ marginTop: 30, fontSize: 16, textAlign: "center" }}
+                >
+                  You listened to{" "}
+                  <Text style={{ fontWeight: "bold" }}>156</Text> genres.
+                </Text>
+              </FadeDown>
+            </>
+          )}
         </View>
 
         {/* PAGE 5 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <Text
-            style={{
-              fontSize: 36,
-              marginBottom: 20,
-              textAlign: "center",
-              fontFamily: "SpotifyMix-Bold",
-            }}
-          >
-            Your top genres
-          </Text>
-          {topGenres.map((genre) => (
-            <View key={genre.rank} style={styles.genreRow1}>
-              <AppText style={styles.genreRank}>{genre.rank}</AppText>
-              <AppText style={styles.genreName}>{genre.name}</AppText>
-            </View>
-          ))}
+          {currentPage === 4 && (
+            <>
+              <FadeUp delay={100}>
+                <Text
+                  style={{
+                    fontSize: 36,
+                    marginBottom: 20,
+                    textAlign: "center",
+                    fontFamily: "SpotifyMix-Bold",
+                  }}
+                >
+                  Your top genres
+                </Text>
+              </FadeUp>
 
-          <View style={{ alignItems: "center", marginTop: 20 }}>
-            <Text
-              style={[
-                styles.shareButton,
-                {
-                  fontFamily: "SpotifyMix-Bold",
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              ]}
-              onPress={onShare}
-            >
-              Share this story
-            </Text>
-          </View>
+              <FadeRight delay={200}>
+                {topGenres.map((genre) => (
+                  <View key={genre.rank} style={styles.genreRow1}>
+                    <AppText style={styles.genreRank}>{genre.rank}</AppText>
+                    <AppText style={styles.genreName}>{genre.name}</AppText>
+                  </View>
+                ))}
+              </FadeRight>
+
+              <FadeUp delay={400}>
+                <View style={{ alignItems: "center", marginTop: 20 }}>
+                  <Text
+                    style={[
+                      styles.shareButton,
+                      {
+                        fontFamily: "SpotifyMix-Bold",
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    ]}
+                    onPress={onShare}
+                  >
+                    Share this story
+                  </Text>
+                </View>
+              </FadeUp>
+            </>
+          )}
         </View>
 
         {/* PAGE 6 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <Text
-            style={{
-              width: 400,
-              fontSize: 48,
-              textAlign: "center",
-              fontFamily: "SpotifyMix-Bold",
-              color: "white",
-            }}
-          >
-            Age is just
-          </Text>
-          <Text
-            style={{
-              fontSize: 48,
-              textAlign: "center",
-              fontFamily: "SpotifyMix-Bold",
-              marginTop: -20,
-              color: "white",
-            }}
-          >
-            a number.
-          </Text>
-          <Text
-            style={{
-              marginTop: 20,
-              fontSize: 16,
-              textAlign: "center",
-              fontWeight: "light",
-              color: "white",
-            }}
-          >
-            So don't take this personally.
-          </Text>
+          {currentPage === 5 && (
+            <>
+              <FadeUp delay={100}>
+                <Text
+                  style={{
+                    width: 400,
+                    fontSize: 48,
+                    textAlign: "center",
+                    fontFamily: "SpotifyMix-Bold",
+                    color: "white",
+                  }}
+                >
+                  Age is just
+                </Text>
+              </FadeUp>
+              <FadeUp delay={400}>
+                <Text
+                  style={{
+                    fontSize: 48,
+                    textAlign: "center",
+                    fontFamily: "SpotifyMix-Bold",
+                    marginTop: -15,
+                    color: "white",
+                  }}
+                >
+                  a number.
+                </Text>
+              </FadeUp>
+              <FadeDown delay={500}>
+                <Text
+                  style={{
+                    marginTop: 20,
+                    fontSize: 16,
+                    textAlign: "center",
+                    fontWeight: "light",
+                    color: "white",
+                  }}
+                >
+                  So don't take this personally.
+                </Text>
+              </FadeDown>
+            </>
+          )}
         </View>
 
         {/* PAGE 7 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <Text
-            style={{
-              width: 400,
-              fontSize: 30,
-              textAlign: "center",
-              fontFamily: "SpotifyMix-Bold",
-              color: "white",
-            }}
-          >
-            Your listening age
-          </Text>
-          <AppText style={styles.listeningAge}>19</AppText>
-          <Text
-            style={{
-              marginTop: -30,
-              fontSize: 16,
-              textAlign: "center",
-              fontWeight: "light",
-              maxWidth: 320,
-              lineHeight: 26,
-              color: "white",
-            }}
-          >
-            Since you listen to mostly new music. Your taste is trending.
-          </Text>
-          <View style={{ alignItems: "center", marginTop: 20 }}>
-            <Text
-              style={[
-                styles.shareButton,
-                {
-                  fontFamily: "SpotifyMix-Bold",
-                  backgroundColor: "white",
-                  color: "#111",
-                },
-              ]}
-              onPress={onShare}
-            >
-              Share this story
-            </Text>
-          </View>
+          {currentPage === 6 && (
+            <>
+              <FadeUp delay={100}>
+                <Text
+                  style={{
+                    width: 400,
+                    fontSize: 30,
+                    textAlign: "center",
+                    fontFamily: "SpotifyMix-Bold",
+                    color: "white",
+                  }}
+                >
+                  Your listening age
+                </Text>
+              </FadeUp>
+
+              <FadeRight delay={300}>
+                <AppText style={styles.listeningAge}>19</AppText>
+              </FadeRight>
+
+              <FadeUp delay={400}>
+                <Text
+                  style={{
+                    marginTop: -30,
+                    fontSize: 16,
+                    textAlign: "center",
+                    fontWeight: "light",
+                    maxWidth: 320,
+                    lineHeight: 26,
+                    color: "white",
+                  }}
+                >
+                  Since you listen to mostly new music. Your taste is trending.
+                </Text>
+              </FadeUp>
+
+              <FadeDown delay={600}>
+                <View style={{ alignItems: "center", marginTop: 20 }}>
+                  <Text
+                    style={[
+                      styles.shareButton,
+                      {
+                        fontFamily: "SpotifyMix-Bold",
+                        backgroundColor: "white",
+                        color: "#111",
+                      },
+                    ]}
+                    onPress={onShare}
+                  >
+                    Share this story
+                  </Text>
+                </View>
+              </FadeDown>
+            </>
+          )}
         </View>
 
         {/* PAGE 8 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <Text
-            style={{
-              fontSize: 32,
-              fontFamily: "SpotifyMix-Bold",
-              color: "white",
-              textAlign: "center",
-            }}
-          >
-            You listened to 1,261 songs this year.
-          </Text>
-          <Text style={{ color: "white", marginTop: 20 }}>
-            But can you guess your #1?
-          </Text>
+          {currentPage === 7 && (
+            <>
+              <FadeUp delay={100}>
+                <Text
+                  style={{
+                    fontSize: 32,
+                    fontFamily: "SpotifyMix-Bold",
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                >
+                  You listened to 1,261 songs this year.
+                </Text>
+              </FadeUp>
+              <FadeDown delay={200}>
+                <Text style={{ color: "white", marginTop: 20 }}>
+                  But can you guess your #1?
+                </Text>
+              </FadeDown>
+            </>
+          )}
         </View>
 
         {/* PAGE 9 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontFamily: "SpotifyMix-Bold",
-              color: "white",
-              textAlign: "center",
-              marginTop: Platform.OS === "ios" ? -50 : 0,
-            }}
-          >
-            Take your pick.
-          </Text>
-          {artists.map((artist) => (
-            <View key={artist.artistName} style={styles.genreRow}>
-              <View>
-                <Image
-                  source={{ uri: artist.image }}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 10,
-                    marginRight: 10,
-                  }}
-                />
-              </View>
-              <View>
+          {currentPage === 8 && (
+            <>
+              <FadeUp delay={100}>
                 <Text
                   style={{
+                    fontSize: 30,
                     fontFamily: "SpotifyMix-Bold",
-                    marginBottom: 10,
-                    color: "#fff",
-                    fontSize: 16,
+                    color: "white",
+                    textAlign: "center",
+                    marginTop: Platform.OS === "ios" ? -20 : -50,
+                    marginBottom: Platform.OS === "ios" ? 30 : 40,
                   }}
                 >
-                  {artist.songName}
+                  Take your pick.
                 </Text>
-                <Text
-                  style={{
-                    marginBottom: 10,
-                    color: "#fff",
-                  }}
-                >
-                  {artist.artistName}
-                </Text>
-              </View>
-            </View>
-          ))}
+              </FadeUp>
+
+              {artists.map((artist) => (
+                <FadeUp delay={400}>
+                  <View key={artist.artistName} style={styles.genreRow}>
+                    <View>
+                      <Image
+                        source={{ uri: artist.image }}
+                        style={{
+                          width: 70,
+                          height: 70,
+                          borderRadius: 10,
+                          marginRight: 10,
+                        }}
+                      />
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          fontFamily: "SpotifyMix-Bold",
+                          marginBottom: 2,
+                          color: "#fff",
+                          fontSize: 16,
+                        }}
+                      >
+                        {artist.songName}
+                      </Text>
+                      <Text
+                        style={{
+                          marginBottom: 10,
+                          color: "#fff",
+                        }}
+                      >
+                        {artist.artistName}
+                      </Text>
+                    </View>
+                  </View>
+                </FadeUp>
+              ))}
+            </>
+          )}
         </View>
 
         {/* PAGE 10 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <View style={styles.videoCard}>
-            {/* Video */}
-            <Video
-              ref={videoRef}
-              style={styles.video}
-              source={require("@/assets/video/rema.mp4")}
-              // resizeMode="cover"
-              shouldPlay
-              isLooping
-              isMuted
-            />
-          </View>
+          {currentPage === 9 && (
+            <>
+              <FadeUp delay={300}>
+                <View style={styles.videoCard}>
+                  {/* Video */}
+                  <Video
+                    ref={videoRef}
+                    style={styles.video}
+                    source={require("@/assets/video/rema.mp4")}
+                    // resizeMode="cover"
+                    shouldPlay
+                    isLooping
+                    isMuted
+                  />
+                </View>
+              </FadeUp>
 
-          <Image
-            source={{
-              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
-            }}
-            style={styles.albumCover}
-          />
+              <FadeUp delay={100}>
+                <Image
+                  source={{
+                    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlndfIZUMX-Ii9MetLROVZjH5ei5_7aYipiw&s",
+                  }}
+                  style={styles.albumCover}
+                />
+              </FadeUp>
 
-          {/* Text Section */}
-          <View style={{ marginTop: 40, alignItems: "center" }}>
-            <Text style={styles.videoHeading}>Your top song</Text>
-            <Text style={styles.videoSubtitle}>FUN by Rema</Text>
-            <Text style={styles.videoCount}>
-              You listened <Text style={{ fontWeight: "bold" }}>46</Text> times.
-            </Text>
-          </View>
+              {/* Text Section */}
+              <View style={{ marginTop: 40, alignItems: "center" }}>
+                <FadeUp delay={400}>
+                  <Text style={styles.videoHeading}>Your top song</Text>
+                </FadeUp>
+                <FadeUp delay={600}>
+                  <Text style={styles.videoSubtitle}>FUN by Rema</Text>
+                </FadeUp>
+                <FadeUp delay={800}>
+                  <Text style={styles.videoCount}>
+                    You listened <Text style={{ fontWeight: "bold" }}>46</Text>{" "}
+                    times.
+                  </Text>
+                </FadeUp>
+              </View>
 
-          {/* Share Button */}
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={[styles.shareButton, { fontFamily: "SpotifyMix-Bold" }]}
-              onPress={onShare}
-            >
-              Share this story
-            </Text>
-          </View>
+              {/* Share Button */}
+              <FadeUp delay={1000}>
+                <View style={{ marginTop: 30 }}>
+                  <Text
+                    style={[
+                      styles.shareButton,
+                      { fontFamily: "SpotifyMix-Bold" },
+                    ]}
+                    onPress={onShare}
+                  >
+                    Share this story
+                  </Text>
+                </View>
+              </FadeUp>
+            </>
+          )}
         </View>
 
         {/* PAGE 11 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontFamily: "SpotifyMix-Bold",
-              color: "#111",
-              backgroundColor: "white",
-              paddingHorizontal: 20,
-              paddingVertical: 5,
-              textAlign: "center",
-              marginBottom: 40,
-            }}
-          >
-            Your top songs
-          </Text>
-
-          {artists.map((artist) => (
-            <View key={artist.artistName} style={styles.songRow}>
-              <View>
-                <Image
-                  source={{ uri: artist.image }}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    // borderRadius: 10,
-                    borderWidth: 3,
-                    borderColor: "#fff",
-                    marginRight: 10,
-                  }}
-                />
-              </View>
-              <View>
+          {currentPage === 10 && (
+            <>
+              <FadeUp delay={100}>
                 <Text
                   style={{
+                    fontSize: 24,
                     fontFamily: "SpotifyMix-Bold",
-                    marginBottom: 0,
-                    color: "#fff",
-                    fontSize: 26,
+                    color: "#111",
+                    backgroundColor: "white",
+                    paddingHorizontal: 20,
+                    paddingVertical: 5,
+                    textAlign: "center",
+                    marginBottom: 40,
                   }}
                 >
-                  {artist.songName}
+                  Your top songs
                 </Text>
-                <Text
-                  style={{
-                    marginBottom: 0,
-                    color: "#fff",
-                  }}
-                >
-                  {artist.artistName}
-                </Text>
-              </View>
-            </View>
-          ))}
+              </FadeUp>
 
-          {/* Share Button */}
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={[styles.shareButton, { fontFamily: "SpotifyMix-Bold" }]}
-              onPress={onShare}
-            >
-              Share this story
-            </Text>
-          </View>
+              {artists.map((artist) => (
+                <FadeRight delay={300}>
+                  <View key={artist.artistName} style={styles.songRow}>
+                    <View>
+                      <Image
+                        source={{ uri: artist.image }}
+                        style={{
+                          width: 80,
+                          height: 80,
+                          // borderRadius: 10,
+                          borderWidth: 3,
+                          borderColor: "#fff",
+                          marginRight: 10,
+                        }}
+                      />
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          fontFamily: "SpotifyMix-Bold",
+                          marginBottom: 0,
+                          color: "#fff",
+                          fontSize: 26,
+                        }}
+                      >
+                        {artist.songName}
+                      </Text>
+                      <Text
+                        style={{
+                          marginBottom: 0,
+                          color: "#fff",
+                        }}
+                      >
+                        {artist.artistName}
+                      </Text>
+                    </View>
+                  </View>
+                </FadeRight>
+              ))}
+
+              {/* Share Button */}
+              <FadeLeft delay={600}>
+                <View style={{ marginTop: 30 }}>
+                  <Text
+                    style={[
+                      styles.shareButton,
+                      { fontFamily: "SpotifyMix-Bold" },
+                    ]}
+                    onPress={onShare}
+                  >
+                    Share this story
+                  </Text>
+                </View>
+              </FadeLeft>
+            </>
+          )}
         </View>
 
-        {/* PAGE 8 */}
+        {/* PAGE 12 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <View
-            style={{
-              alignItems: "center",
-              backgroundColor: "#fff",
-              padding: 0,
-              borderRadius: 10,
-              width: "90%",
-              height: 400,
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 50,
-                fontFamily: "SpotifyMix-Bold",
-                color: "#222",
-                textAlign: "center",
-              }}
-            >
-              Your
-            </Text>
-            <Text
-              style={{
-                fontSize: 50,
-                fontFamily: "SpotifyMix-Bold",
-                color: "#222",
-                textAlign: "center",
-                marginTop: -25,
-              }}
-            >
-              Top Songs
-            </Text>
-            <View style={{ position: "absolute", bottom: 0 }}>
-              <Text
+          {currentPage === 11 && (
+            <>
+              <View
                 style={{
-                  fontSize: 120,
-                  fontFamily: "Spotify-Bold",
-                  fontWeight: "bold",
-                  color: "#CCCCFF",
-                  textAlign: "center",
-                  // letterSpacing: 0,
-                  fontStyle: "italic",
+                  alignItems: "center",
+                  backgroundColor: "#fff",
+                  padding: 0,
+                  borderRadius: 10,
+                  width: "90%",
+                  height: 400,
+                  justifyContent: "center",
                 }}
               >
-                2025
+                <FadeUp delay={100}>
+                  <Text
+                    style={{
+                      fontSize: 50,
+                      fontFamily: "SpotifyMix-Bold",
+                      color: "#222",
+                      textAlign: "center",
+                    }}
+                  >
+                    Your
+                  </Text>
+                </FadeUp>
+                <FadeUp delay={200}>
+                  <Text
+                    style={{
+                      fontSize: 50,
+                      fontFamily: "SpotifyMix-Bold",
+                      color: "#222",
+                      textAlign: "center",
+                      marginTop: -25,
+                    }}
+                  >
+                    Top Songs
+                  </Text>
+                </FadeUp>
+                <View style={{ position: "absolute", bottom: 0 }}>
+                  <Text
+                    style={{
+                      fontSize: 120,
+                      fontFamily: "Spotify-Bold",
+                      fontWeight: "bold",
+                      color: "#CCCCFF",
+                      textAlign: "center",
+                      // letterSpacing: 0,
+                      fontStyle: "italic",
+                    }}
+                  >
+                    2025
+                  </Text>
+                </View>
+              </View>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 30,
+                  textAlign: "center",
+                  fontFamily: "SpotifyMix-Bold",
+                  marginTop: 20,
+                  lineHeight: 30,
+                }}
+              >
+                We made you a playlist of all your favourites.
               </Text>
-            </View>
-          </View>
-          <Text
-            style={{
-              color: "white",
-              fontSize: 35,
-              textAlign: "center",
-              fontFamily: "SpotifyMix-Bold",
-              marginTop: 20,
-              lineHeight: 35,
-            }}
-          >
-            We made you a playlist of all your favourites.
-          </Text>
 
-          {/* Share Button */}
-          <View style={{ marginTop: 30 }}>
-            <Text style={styles.videoShareBtn} onPress={onShare}>
-              Add to Your Library
-            </Text>
-          </View>
+              {/* Share Button */}
+              <FadeUp delay={400}>
+                <View style={{ marginTop: 30 }}>
+                <Text style={styles.videoShareBtn} onPress={onShare}>
+                  Add to Your Library
+                </Text>
+              </View>
+              </FadeUp>
+            </>
+          )}
         </View>
       </ScrollView>
     </View>

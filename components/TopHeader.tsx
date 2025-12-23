@@ -1,6 +1,12 @@
-import React from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 type Props = {
   isWhiteBackground: boolean;
@@ -45,7 +51,7 @@ export default TopHeader;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 0,
+    top: Platform.OS === "android" ? 10 : 0,
     width: "100%",
     paddingHorizontal: 10,
     paddingTop: 50,

@@ -6,13 +6,13 @@ import Animated, {
 } from "react-native-reanimated";
 
 export const FadeUp = ({ children, delay = 0 }: any) => (
-  <Animated.View entering={FadeInUp.delay(delay).duration(600)}>
+  <Animated.View entering={FadeInUp.delay(delay).duration(900)}>
     {children}
   </Animated.View>
 );
 
 export const FadeDown = ({ children, delay = 0 }: any) => (
-  <Animated.View entering={FadeInDown.delay(delay).duration(600)}>
+  <Animated.View entering={FadeInDown.delay(delay).duration(900)}>
     {children}
   </Animated.View>
 );
