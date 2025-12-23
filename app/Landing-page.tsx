@@ -1,3 +1,4 @@
+import { FadeDown, FadeUp } from "@/components/FadeSlideIn";
 import TopHeader from "@/components/TopHeader";
 import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
@@ -234,10 +235,14 @@ const Landingpage = () => {
       >
         {/* PAGE 1 */}
         <View style={[styles.page, { backgroundColor: "#fff" }]}>
-          <AppText style={styles.title}>We're ready for you, Kije.</AppText>
-          <Text style={{ marginTop: 20, fontWeight: "light" }}>
-            Come on Down.
-          </Text>
+          <FadeDown delay={200}>
+            <AppText style={styles.title}>We're ready for you, Kije.</AppText>
+          </FadeDown>
+          <FadeUp delay={500}>
+            <Text style={{ marginTop: 20, fontWeight: "light" }}>
+              Come on Down.
+            </Text>
+          </FadeUp>
 
           <View style={styles.bigNumberContainer}>
             <AppText style={styles.bigNumber}>2025</AppText>
@@ -246,16 +251,18 @@ const Landingpage = () => {
 
         {/* PAGE 2 */}
         <View style={[styles.page, { backgroundColor: "#111" }]}>
-          <AppText style={styles.pageTitle}>You listened.</AppText>
-          <AppText
-            style={{
-              color: "white",
-              fontSize: 32,
-              lineHeight: Platform.OS === "ios" ? 30 : 30,
-            }}
-          >
-            We counted.
-          </AppText>
+          <FadeDown>
+            <AppText style={styles.pageTitle}>You listened.</AppText>
+            <AppText
+              style={{
+                color: "white",
+                fontSize: 32,
+                lineHeight: Platform.OS === "ios" ? 30 : 30,
+              }}
+            >
+              We counted.
+            </AppText>
+          </FadeDown>
         </View>
 
         {/* PAGE 3 */}
@@ -673,7 +680,7 @@ const styles = StyleSheet.create({
   },
   bigNumberContainer: { position: "absolute", bottom: 60 },
   bigNumber: {
-    fontSize: Platform.OS === "ios" ? 130 : 190,
+    fontSize: Platform.OS === "ios" ? 130 : 160,
     fontWeight: "bold",
     // fontStyle: "italic",
     color: "orangered",
