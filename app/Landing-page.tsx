@@ -132,23 +132,15 @@ const Landingpage = () => {
 
   // Play first song on mount
   useEffect(() => {
-    let mounted = true;
-
-    const startFirstSong = async () => {
-      if (!mounted) return;
-      await playSongForPage(0);
-    };
-
-    startFirstSong();
+    if (pathname === "/landing") {
+      // adjust to your landing page route
+      playSongForPage(0);
+    }
 
     return () => {
-      mounted = false;
-      if (soundRef.current) {
-        soundRef.current.unloadAsync();
-        soundRef.current = null;
-      }
+      if (soundRef.current) soundRef.current.unloadAsync();
     };
-  }, []);
+  }, [pathname]);
 
   // Mute/unmute
   useEffect(() => {
