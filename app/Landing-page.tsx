@@ -9,7 +9,7 @@ import { Audio, Video } from "expo-av";
 import { useFonts } from "expo-font";
 import { router, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -132,15 +132,23 @@ const Landingpage = () => {
 
   // Play first song on mount
   useEffect(() => {
-    if (pathname === "/landing") {
-      // adjust to your landing page route
-      playSongForPage(0);
-    }
+    let mounted = true;
+
+    const startFirstSong = async () => {
+      if (!mounted) return;
+      await playSongForPage(0);
+    };
+
+    startFirstSong();
 
     return () => {
-      if (soundRef.current) soundRef.current.unloadAsync();
+      mounted = false;
+      if (soundRef.current) {
+        soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
     };
-  }, [pathname]);
+  }, []);
 
   // Mute/unmute
   useEffect(() => {
@@ -159,8 +167,8 @@ const Landingpage = () => {
       setCurrentPage(index);
 
       // music logic stays
-      if (index % 3 === 0) {
-        playSongForPage(index / 3);
+      if (index % 4 === 0) {
+        playSongForPage(index / 4);
       }
     }
 
@@ -551,8 +559,8 @@ const Landingpage = () => {
               </FadeUp>
 
               {artists.map((artist) => (
-                <FadeUp delay={400}>
-                  <View key={artist.artistName} style={styles.genreRow}>
+                <FadeUp key={artist.artistName} delay={400}>
+                  <View style={styles.genreRow}>
                     <View>
                       <Image
                         source={{ uri: artist.image }}
@@ -675,8 +683,8 @@ const Landingpage = () => {
               </FadeUp>
 
               {artists.map((artist) => (
-                <FadeRight delay={300}>
-                  <View key={artist.artistName} style={styles.songRow}>
+                <FadeRight key={artist.artistName} delay={300}>
+                  <View style={styles.songRow}>
                     <View>
                       <Image
                         source={{ uri: artist.image }}
